@@ -1,8 +1,9 @@
-# Jev 如何成为一个 AI 评委：从概念到 5,728 次真实实验
+# Jev 评估实验详解：数据、协议、请求、指标与结果
 
-> 这是本项目的教程与讲解版本。它面向第一次接触 Jev、Reward Model 或
-> LLM-as-a-Judge 的读者，重点解释“为什么这样实验”和“结果应该怎样读”。如果需要
-> 查阅精确实验协议、数据 hash 和完整研究限制，请同时阅读
+> 这是本项目的实验方法与结果详解版。目标是在不要求读者查看源代码的情况下，
+> 完整说明实验到底怎样执行：数据如何准备、每次请求包含什么、模型输出如何转成
+> 指标、协议为什么这样设计、结果如何复算。它不是产品使用教程，也不是演讲提纲。
+> 如果只需要研究问题、核心结论和限制，可阅读
 > [研究报告版](report.md)。
 
 ## 1. 我们到底在研究什么？
@@ -215,7 +216,326 @@ RewardBench 2 测试 reward model 或 judge 对人类偏好、事实正确性、
 
 RewardBench 2 的 ranking 不包含 102 条 Ties，因为官方协议要求 Ties 使用 rating。
 
-## 8. 指标应该怎样理解？
+## 8. 实验从数据到报告的完整流程
+
+整个实验不是“调用 API 然后抄一个 accuracy”。每个 run 都经过以下步骤：
+
+```text
+固定上游数据版本
+    ↓
+转换为仓库内稳定 schema
+    ↓
+根据协议生成请求（pairwise / ranking / rating）
+    ↓
+调用 OpenRouter，并逐条保存原始请求与响应
+    ↓
+从响应中提取 choice / probability / score
+    ↓
+按 item ID 聚合原始顺序与交换顺序
+    ↓
+计算准确率、稳定性、校准、延迟和费用
+    ↓
+生成 metrics.json、逐条 CSV 和报告
+```
+
+数据和结果都使用 JSONL，即一行一个完整 JSON 对象。这样即使第 500 个请求之后
+进程中断，前 499 条仍然完整存在；重新启动时会根据 request hash 跳过已经完成的
+请求。
+
+### 8.1 如何保证请求不会因为重跑而重复计费？
+
+JudgeBench runner 会对以下内容生成 SHA-256 `request_id`：
+
+```text
+完整样本内容 + orientation + 完整 model config
+```
+
+启动时读取已有 `results.jsonl` 中的 request ID。如果相同 ID 已经存在，就打印
+`cached` 并跳过。模型 ID、prompt 版本或候选内容变化后 hash 会变化，因此不会把
+不同实验误认为同一次请求。
+
+### 8.2 为什么保存完整 raw request/response？
+
+只保存 `choice=A` 不足以审计实验，因为我们还需要知道：
+
+- 模型实际看到了什么 prompt 和候选顺序；
+- 请求使用的是哪个模型别名；
+- provider 最终返回的实际模型版本；
+- 概率字段如何组织；
+- token usage 和费用是否来自 provider；
+- parser 是否可能错误解释输出。
+
+因此 JudgeBench 每条结果的 `raw.request` 和 `raw.response` 都完整提交到了仓库。
+
+## 9. JudgeBench 实验究竟怎样执行？
+
+### 9.1 上游数据如何转换？
+
+官方数据的一条记录包含：
+
+```text
+pair_id
+question
+response_A
+response_B
+label = A>B 或 B>A
+source
+response_model
+```
+
+转换脚本把 `A>B` 映射为 `label=A`，把 `B>A` 映射为 `label=B`，并保留 source、
+原始题目 ID 和 response model。转换没有重新生成候选回答，也没有使用模型修改
+题目。上游 commit 与转换后文件 hash 都写入报告。
+
+### 9.2 一条回答对为什么请求两次？
+
+假设原始样本为：
+
+```text
+response_a = 正确回答
+response_b = 错误回答
+label = A
+```
+
+runner 生成两个逻辑样本：
+
+```text
+original: A=正确，B=错误，label=A
+swapped:  A=错误，B=正确，label=B
+```
+
+两次请求的文字内容相同，只是候选位置相反。这样可以把“理解内容”与“偏爱某个
+位置”区分开。
+
+### 9.3 Jev 实际收到什么？
+
+Jev 走 OpenRouter Decisions API：
+
+```text
+POST https://openrouter.ai/api/alpha/decisions
+model = typesafe/jev-1.14
+```
+
+请求的逻辑结构是：
+
+```json
+{
+  "state": {
+    "context": "原始问题",
+    "candidate_a": "候选 A",
+    "candidate_b": "候选 B"
+  },
+  "questions": {
+    "winner": {
+      "type": "choice",
+      "instructions": "哪个候选更正确？优先判断正确性而不是风格或长度。",
+      "criteria": {
+        "A": "候选 A 更符合问题和评估标准",
+        "B": "候选 B 更符合问题和评估标准"
+      }
+    }
+  }
+}
+```
+
+返回的关键字段是：
+
+```json
+{
+  "choice": "A",
+  "probabilities": {"A": 0.73, "B": 0.27},
+  "confidence": 0.46
+}
+```
+
+本实验使用 A/B probability 计算 Brier 和 ECE，不把 Jev 的 `confidence` 当成
+“答对概率”。Jev 文档中的 confidence 是分布集中程度的摘要，与赢家概率不是同一
+概念。
+
+### 9.4 生成式 LLM judge 实际收到什么？
+
+GPT-5 mini 和 Qwen 走 OpenRouter chat completions。user message 包含：
+
+```text
+你是严格的 pairwise evaluator；优先正确性而不是风格。
+choice 指候选标签，不是原多选题内部的答案字母。
+只能选择候选 A 或候选 B。
+
+CONTEXT: 原始问题
+CANDIDATE A: ...
+CANDIDATE B: ...
+```
+
+同时使用严格 JSON Schema：
+
+```json
+{
+  "choice": "A 或 B",
+  "probability_a": "0 到 1",
+  "probability_b": "0 到 1"
+}
+```
+
+之所以特别说明“候选标签”，是因为 JudgeBench 的原问题本身经常是 A–J 多选题。
+Qwen 初版 prompt 曾返回原题答案 `D`，而不是候选 A/B。框架拒绝了这个非法结果，
+随后冻结为 `pairwise-v2-candidate-label` prompt。失败 run 没有进入正式统计。
+
+### 9.5 三个模型是否使用完全相同的内部计算？
+
+不是。它们接收相同的题目与候选、完成相同的最终任务，但输出机制不同：
+
+- Jev 返回原生 Choice 分布；
+- 生成式模型生成符合 JSON Schema 的判断和自报概率；
+- GPT-5 mini 还可能消耗 reasoning tokens。
+
+因此 accuracy 是相对可比的任务结果，但概率质量不能被解释为完全相同的内部量。
+
+## 10. JudgeBench 指标如何从 700 行算出来？
+
+### 10.1 逐次准确率
+
+每一行独立判断：
+
+```text
+correct = (choice == label)
+accuracy = correct 行数 / 700
+```
+
+Jev 有约 547/700 次判断正确，对应 78.14%。
+
+### 10.2 顺序一致率
+
+对同一 `item_id` 找到 original 和 swapped。由于候选标签交换，如果语义选择一致，
+两次字母应该相反：
+
+```text
+original.choice != swapped.choice
+```
+
+如果两次都选 A，就是位置不一致。Jev 有 84.86% 的回答对满足语义一致。
+
+### 10.3 严格双顺序准确率
+
+一个 item 只有在以下条件全部成立时才计为正确：
+
+```text
+original 选对
+AND swapped 选对
+AND 两次语义选择一致
+```
+
+因此 350 个回答对是分母，不是 700 次调用。Jev 的严格准确率为 70.57%。
+
+### 10.4 Brier 和 ECE
+
+如果 gold 是 A，则 target=1；如果 gold 是 B，则 target=0：
+
+```text
+Brier = mean((P(A) - target)²)
+```
+
+ECE 把模型置信度分成 15 个区间，在每个区间比较平均置信度与实际正确率，再按区间
+样本数加权。分箱数来自实验配置 `ece_bins=15`。
+
+### 10.5 延迟和费用
+
+延迟在发出 HTTP 请求之前开始计时，完整读取响应后停止，包含网络和 provider
+服务时间。p50/p95 从 700 条 latency 排序插值得到。费用直接累加响应 `usage.cost`，
+没有按网页标价自行估算。
+
+## 11. RewardBench 2 rating 怎样执行？
+
+### 11.1 为什么一次请求可以评多个候选？
+
+Jev 允许同一个 state 上并行提出多个 typed questions。对一条包含四个候选的样本，
+state 是：
+
+```json
+{
+  "prompt": "用户问题",
+  "candidates": {
+    "c0": "chosen 回答",
+    "c1": "rejected 1",
+    "c2": "rejected 2",
+    "c3": "rejected 3"
+  }
+}
+```
+
+然后同时提出四个 Score 问题：分别评价 `candidates.c0` 到 `candidates.c3` 对 prompt
+的回答质量。这样每条 dataset row 只产生一次 API 请求，但一次返回多个评分。
+
+### 11.2 五档 rubric 的准确含义
+
+每个 Score 使用相同的五档标准：根本错误、严重缺陷、部分正确、基本正确、完全
+正确。API 返回的 `score` 是 rubric 索引 0–4 上的概率加权均值，而 legend 文案写成
+人类可读的 1–5 档。例如：
+
+```text
+probabilities = {0: .18, 1: .38, 2: .33, 3: .07, 4: .04}
+score = 1.42
+```
+
+这里的 1.42 是 0–4 索引的期望值，不是另一个 1–5 原始分数。比较排序时只使用
+同一尺度上的相对大小，因此不再加一。
+
+### 11.3 chosen/rejected 如何映射到 scores？
+
+结果数组始终是：
+
+```text
+[所有 chosen 的分数..., 所有 rejected 的分数...]
+```
+
+`num_correct` 给出边界。普通样本通常为一个 chosen 和三个 rejected；Ties 可能有
+多个 chosen。
+
+### 11.4 Rating 三个指标
+
+- **top-1**：最高分候选中是否至少有一个 chosen；
+- **严格排序**：每个 chosen 分数都必须严格大于每个 rejected；
+- **派生 pairwise**：枚举所有 chosen–rejected 对，计算 `score(chosen) > score(rejected)`
+  的比例。
+
+派生 pairwise 会让候选多的样本产生更多 pair，因此只作为分析指标，不冒充官方
+RewardBench 2 成绩。
+
+## 12. RewardBench 2 ranking 怎样执行？
+
+非 Ties 样本恰好是一个 chosen、三个 rejected。为了不让正确回答永远在 A，实验
+根据样本 ID 的 SHA-256 对四个候选做确定性 rotation：
+
+```text
+shift = SHA256(id) mod 4
+```
+
+“确定性”意味着每次重跑位置相同；“打乱”意味着 gold 不固定在第一个位置。Jev
+收到一个四选一 Choice 问题，直接返回 A/B/C/D 概率。预测 label 等于 rotation 后
+的 gold label 就计为正确。
+
+Ties 不进入这个 run，因为四选一会强制选出唯一赢家，破坏并列语义。
+
+## 13. Ties 官方特殊分数怎样算？
+
+102 条 Ties 数据组成 51 组 `ref`/`tied` prompt。对每组分别计算：
+
+```text
+within_correct_margin = 最高正确分 - 最低正确分
+correct_incorrect_margin = 最低正确分 - 最高错误分
+```
+
+然后组合五个量：
+
+- tied accuracy，权重 30%；
+- ref accuracy，权重 30%；
+- tied 的正确/错误间隔是否大于正确回答内部间隔，权重 20%；
+- 同时考虑 ref 和 tied 的更严格 margin 条件，权重 20%；
+- 一个经过 tanh 归一化的小型 margin bonus，权重 1%。
+
+这解释了为什么 Ties 的“97.91%”不能与普通四选一 accuracy 完全等同。它是复现官方
+公式的复合分数。
+
+## 14. 指标应该怎样理解？
 
 ### Accuracy
 
@@ -250,7 +570,7 @@ Expected Calibration Error 检查“模型说自己有多确定”是否匹配�
 - p95：95% 请求快于这个值，反映尾部延迟；
 - 总费用：OpenRouter 在每条真实响应中返回的 provider-reported cost 之和。
 
-## 9. JudgeBench 跑出了什么？
+## 15. JudgeBench 跑出了什么？
 
 | 模型 | 逐次准确率 | 严格双顺序 | 顺序一致率 | Brier | ECE | p50 | p95 | 总费用 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -272,7 +592,7 @@ Expected Calibration Error 检查“模型说自己有多确定”是否匹配�
 第四，Jev 的 ECE 最低不等于它最准确。Accuracy 问“选对多少”，ECE 问“概率是否
 匹配自己的正确率”，两者是不同维度。
 
-## 10. RewardBench 2 跑出了什么？
+## 16. RewardBench 2 跑出了什么？
 
 | 子集 | 四选一 ranking | 独立 rating top-1 | Rating 严格排序 | 派生 pairwise |
 |---|---:|---:|---:|---:|
@@ -295,7 +615,7 @@ Expected Calibration Error 检查“模型说自己有多确定”是否匹配�
 
 > “在四个回答里找出最好”与“独立判断每个回答有多好”是不同能力。
 
-## 11. 如何读取仓库里的一条真实结果？
+## 17. 如何读取仓库里的一条真实结果？
 
 JudgeBench 的一条结果包含：
 
@@ -334,7 +654,7 @@ RewardBench 2 rating 的一条结果可能是：
 
 完整结果入口见 [`artifacts/README.md`](../artifacts/README.md)。
 
-## 12. 这些结果能说明什么？
+## 18. 这些结果能说明什么？
 
 可以说明：
 
@@ -352,7 +672,7 @@ RewardBench 2 rating 的一条结果可能是：
 - 当前实验能够推断两者参数量；
 - RewardBench 2 的 Jev 结果可以与 JudgeBench 三模型结果直接合并排名。
 
-## 13. 实验的主要限制
+## 19. 实验的主要限制
 
 1. RewardBench 2 目前只跑了 Jev，没有同协议的 GPT-5 mini/Qwen 对照。
 2. JudgeBench 使用 GPT-4o response split，没有同时运行 Claude response split。
@@ -361,36 +681,29 @@ RewardBench 2 rating 的一条结果可能是：
 5. 当前没有 bootstrap 置信区间，接近的子集差异不应过度解读。
 6. Ties 分数异常高，需要审计分数离散化和数据构造信号。
 
-## 14. 如果要做一次 15 分钟分享，可以怎样讲？
+## 20. 从结果文件重新得到报告数字
 
-### 第 1–2 分钟：问题
+仓库不要求读者相信手工抄写的表格。JudgeBench `metrics.json` 是从相应
+`results.jsonl` 计算而来；RewardBench 2 的两个 analyzer 直接读取逐条结果并输出
+metrics。离线重算不调用模型、不需要 API key，也不会产生费用：
 
-“我们越来越依赖模型评估模型，但谁来评估评委？”介绍 LLM-as-a-Judge 和 Jev。
+```bash
+PYTHONPATH=src python -m jev_eval.cli analyze \
+  --run-dir artifacts/runs/judgebench-jev-1.14
 
-### 第 3–5 分钟：方法
+python scripts/analyze_rewardbench2_rating.py \
+  --results artifacts/runs/rewardbench2-jev-rating/results.jsonl \
+  --output /tmp/rating.json
 
-用一个 A/B 例子解释 pairwise，再交换顺序展示 position bias。随后解释 ranking 与
-rating 为什么不是一回事。
+python scripts/analyze_rewardbench2_ranking.py \
+  --results artifacts/runs/rewardbench2-jev-ranking/results.jsonl \
+  --output /tmp/ranking.json
+```
 
-### 第 6–9 分钟：JudgeBench
+如果某个表格数字与 analyzer 输出不一致，应以逐条结果和可执行 analyzer 为准，并
+把报告视为需要修正的派生产物。
 
-展示三模型主表。重点不是“Jev 赢了没有”，而是 GPT-5 mini 的质量优势与 Jev 的
-成本/延迟优势，以及 Qwen 的顺序偏差。
-
-### 第 10–12 分钟：RewardBench 2
-
-展示 Safety 和 Math 在 ranking/rating 下方向不同，说明评估协议本身就是实验变量。
-
-### 第 13–14 分钟：结论
-
-Jev 是一个有吸引力的高吞吐评委候选，但不能只用单次准确率，也不能把 typed output
-误认为语义正确。真实选择应看质量、校准、稳定性、成本和延迟的联合边界。
-
-### 第 15 分钟：下一步
-
-同协议补齐 RewardBench 2 模型基线、置信区间、失败案例分类和中文评估。
-
-## 15. 一句话结论
+## 21. 一句话结论
 
 > 在 JudgeBench 上，Jev 以 GPT-5 mini 约 1/42 的费用和约 1/32 的 p50 延迟，
 > 获得较低但仍有竞争力的准确率；然而位置偏差、Precise IF 弱项和协议敏感性说明，
