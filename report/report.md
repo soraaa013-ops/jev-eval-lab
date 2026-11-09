@@ -55,8 +55,9 @@ JudgeBench 的三模型结果：
 | Jev 1.14 | 78.14% | 70.57% | 84.86% | 0.436 s | $0.0543 |
 | Qwen3-30B-A3B | 64.29% | 40.00% | 51.43% | 1.19 s | $0.1128 |
 
-RewardBench 2 的 Jev 结果：官方风格六子集宏平均 80.49%；统一 rating top-1
-77.91%，严格排序 77.75%，派生 pairwise 93.12%。后者不是官方成绩。
+RewardBench 2 官方数据上的 Jev 自定义适配结果：四选一 Choice 为 82.47%（仅五个
+非 Ties 子集）；统一 rating top-1 77.91%，严格排序 77.75%，派生 pairwise
+93.12%。这些数字都不是 RewardBench 2 官方 leaderboard 成绩。
 
 ## 0.3 数据集清单与数据形态
 
@@ -245,7 +246,7 @@ MMLU 来源样本上的逐次准确率略高（Jev 80.52%，GPT-5 mini 77.27%）
 - [ ] 冻结数据集版本与许可证记录
 - [x] 运行 Jev 固定版本
 - [x] 运行两个生成式 judge 基线
-- [x] RewardBench 2 全量 Jev 官方风格协议（非 Ties ranking + Ties rating）
+- [x] RewardBench 2 全量 Jev 任务结构适配（非官方 leaderboard 复现）
 - [x] RewardBench 2 全量 Jev 统一 rating 与派生 pairwise 分析
 - [ ] 接入开放 reward/decision model
 - [ ] 生成置信区间与可靠性图
@@ -255,20 +256,24 @@ MMLU 来源样本上的逐次准确率略高（Jev 80.52%，GPT-5 mini 77.27%）
 ## 11. RewardBench 2 全量结果（2026-11-09）
 
 RewardBench 2 共 1,865 条，包含 Factuality、Focus、Math、Precise IF、Safety 和
-Ties。我们实现两套协议。官方风格协议对 1,763 条非 Ties 样本随机且确定性地
+Ties。数据集、子集划分和正确答案来自官方公开数据，不是本项目构造的；本项目实现
+的 judge 协议则是 Jev 适配，并非官方 leaderboard runner 的逐项复现。适配协议对
+1,763 条非 Ties 样本确定性地
 打乱四个候选，让 Jev Choice 选择最佳回答；102 条 Ties 样本使用独立 Score，按
-官方的 ref/tied accuracy 与 margin 公式聚合。统一 rating 协议则对每条样本的所有
+官方的 ref/tied accuracy 与 margin 公式聚合。这里的 Score 是本项目自定义五档
+rubric；官方 generative-RM rating prompt 使用 1--10 分，因此即便聚合公式相同，
+结果也不能作为官方榜单分数。统一 rating 协议则对每条样本的所有
 候选独立评分，并派生 top-1、严格排序与 pairwise 指标。
 
-| 子集 | 官方风格 ranking | Rating top-1 | Rating 严格排序 | 派生 pairwise |
+| 子集 | Jev Choice 适配 | Rating top-1 | Rating 严格排序 | 派生 pairwise |
 |---|---:|---:|---:|---:|
 | Factuality | 80.42% | 81.47% | 81.05% | 90.74% |
 | Focus | 93.54% | 87.88% | 87.68% | 94.75% |
 | Math | 72.68% | 77.60% | 77.60% | 87.07% |
 | Precise IF | 50.63% | 55.63% | 55.63% | 73.13% |
 | Safety | 87.78% | 66.44% | 66.44% | 74.22% |
-| Ties | 97.91%（官方特殊分数） | 99.02% | 99.02% | 99.98% |
-| 聚合 | 80.49%（六子集宏平均） | 77.91% | 77.75% | 93.12% |
+| Ties | 97.91%（官方公式 + 自定义五档分数） | 99.02% | 99.02% | 99.98% |
+| 研究性聚合 | 80.49%（自定义六子集等权宏平均） | 77.91% | 77.75% | 93.12% |
 
 Ranking 共花费 `$0.16098`，平均调用延迟 446.6 ms；rating 共花费
 `$0.19796`，平均调用延迟 475.2 ms。二者均锁定 Jev 1.14，并保存实际返回版本、
@@ -278,6 +283,9 @@ Ranking 共花费 `$0.16098`，平均调用延迟 446.6 ms；rating 共花费
 66.44%；Math 则从联合选择的 72.68% 上升到独立评分的 77.60%。这表明“哪个回答
 最好”和“每个回答绝对质量是多少”不是可互换的问题。派生 pairwise 93.12% 也不应
 被误称为 RewardBench 2 官方成绩，因为它改变了样本权重与决策上下文。
+
+同理，80.49% 是本项目为便于观察而计算的六子集等权平均，不是官方 leaderboard
+overall；五个非 Ties 子集按样本数合并后的四选一准确率是 82.47%。
 
 Precise IF 在两种协议中都是最弱子集（50.63% / 55.63%），是后续错误分析和
 原子化 rubric 实验的首要对象。Ties 分数异常高，需进一步审计 Score 的离散化、
