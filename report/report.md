@@ -1,7 +1,7 @@
 # Jev 类型决策模型在评估场景中的应用研究
 
-> 状态：v0.2，已完成 JudgeBench GPT-4o split 的三模型全量双顺序实验。
-> RewardBench 2 原生多候选协议尚待实现。示例 smoke-test 不作为模型证据。
+> 状态：v0.3。已完成 JudgeBench GPT-4o split 的三模型全量双顺序实验，及
+> RewardBench 2 的 Jev 全量 ranking/rating 实验。示例 smoke-test 不作为模型证据。
 
 ## 摘要
 
@@ -10,6 +10,121 @@ Jev 是一种面向类型化判断而非文本生成的托管决策模型。给�
 而是它在模型评估中何时能够成为可靠的 judge，以及它在准确率、校准、稳定性、
 延迟与成本之间形成怎样的边界。研究将 Jev 与生成式 LLM judge、专用 reward
 model、开放决策模型和简单基线放在统一协议下比较。
+
+## 0. 本次到底跑了什么
+
+截至 2026-11-09，仓库包含两套公开评估集合、五个完整实验 run，共 5,728 条
+真实 API 判断明细：
+
+| Benchmark / 协议 | 原始样本 | 实际判断数 | 比较对象 | 主要问题 |
+|---|---:|---:|---|---|
+| JudgeBench pairwise + A/B swap | 350 对 | 700 × 3 模型 | Jev、GPT-5 mini、Qwen3-30B-A3B | 能否识别客观正确回答；是否受位置影响 |
+| RewardBench 2 rating | 1,865 条 | 1,865 | Jev | 独立评分能否把 chosen 排在 rejected 之前 |
+| RewardBench 2 ranking | 1,763 条非 Ties | 1,763 | Jev | 同时观察四个候选时能否选中最佳回答 |
+| RewardBench 2 Ties | 102 条 / 51 组 | 包含在 rating 中 | Jev | 多个正确回答的分数间隔是否合理 |
+
+这里的“5,728 条”是 `700×3 + 1,865 + 1,763`。完整实验结果总索引位于
+[`artifacts/README.md`](../artifacts/README.md)。逐条结果并非外部链接或未提交的
+本地文件，而是仓库中实际提交的 JSONL/CSV。
+
+### 0.1 结果文件在哪里
+
+- 三模型 JudgeBench 逐项对照：
+  [`artifacts/comparisons/judgebench.csv`](../artifacts/comparisons/judgebench.csv)
+- Jev JudgeBench 700 条：
+  [`artifacts/runs/judgebench-jev-1.14/results.jsonl`](../artifacts/runs/judgebench-jev-1.14/results.jsonl)
+- GPT-5 mini JudgeBench 700 条：
+  [`artifacts/runs/judgebench-gpt-5-mini/results.jsonl`](../artifacts/runs/judgebench-gpt-5-mini/results.jsonl)
+- Qwen JudgeBench 700 条：
+  [`artifacts/runs/judgebench-qwen3-30b-a3b-v2/results.jsonl`](../artifacts/runs/judgebench-qwen3-30b-a3b-v2/results.jsonl)
+- RewardBench 2 rating 1,865 条：
+  [`artifacts/runs/rewardbench2-jev-rating/results.jsonl`](../artifacts/runs/rewardbench2-jev-rating/results.jsonl)
+- RewardBench 2 ranking 1,763 条：
+  [`artifacts/runs/rewardbench2-jev-ranking/results.jsonl`](../artifacts/runs/rewardbench2-jev-ranking/results.jsonl)
+
+每个 run 目录同时包含 `metrics.json`。JudgeBench run 还包含 `manifest.json`，记录
+完整 resolved config、数据 hash、Python 版本、模型 ID 和计划调用数。
+
+### 0.2 核心结果一览
+
+JudgeBench 的三模型结果：
+
+| 模型 | 逐次准确率 | 严格双顺序准确率 | 顺序一致率 | p50 | 总费用 |
+|---|---:|---:|---:|---:|---:|
+| GPT-5 mini | 85.71% | 80.57% | 89.71% | 14.16 s | $2.3001 |
+| Jev 1.14 | 78.14% | 70.57% | 84.86% | 0.436 s | $0.0543 |
+| Qwen3-30B-A3B | 64.29% | 40.00% | 51.43% | 1.19 s | $0.1128 |
+
+RewardBench 2 的 Jev 结果：官方风格六子集宏平均 80.49%；统一 rating top-1
+77.91%，严格排序 77.75%，派生 pairwise 93.12%。后者不是官方成绩。
+
+## 0.3 数据集清单与数据形态
+
+### JudgeBench
+
+来源是 JudgeBench 官方 GPT-4o response split，冻结到官方仓库 commit
+`e2c52c284e735e139b3daa61c206ee208f36c461`。转换文件为
+[`data/benchmarks/judgebench-gpt.jsonl`](../data/benchmarks/judgebench-gpt.jsonl)，
+SHA-256：`e93afb67adad4fa12d1f6f34cb07e82f760682497efe7c4fd6f6c3147d4a3851`。
+
+350 个回答对的构成为：
+
+| 来源 | 唯一回答对 |
+|---|---:|
+| MMLU-Pro | 154 |
+| LiveBench | 154（Reasoning 98，Math 56） |
+| LiveCodeBench | 42 |
+
+每条数据包括问题、两个由同一 response model 生成的候选回答，以及基于客观正确性
+的 `A`/`B` 标签。运行时把每条数据再交换一次候选顺序，因此每模型产生 700 条结果。
+
+### RewardBench 2
+
+完整 test split 位于
+[`data/benchmarks/rewardbench2.jsonl`](../data/benchmarks/rewardbench2.jsonl)，
+SHA-256：`6999c797b2fdb9ed2a1aeb1fec481ee64640bcaaea69fb3116f7c740e9c10895`。
+
+| 子集 | 样本数 | 关注能力 |
+|---|---:|---|
+| Factuality | 475 | 事实正确性与幻觉 |
+| Focus | 495 | 回答是否聚焦、相关和简洁 |
+| Safety | 450 | 安全偏好与拒答质量 |
+| Math | 183 | 数学答案/推理偏好 |
+| Precise IF | 160 | 精确指令遵循 |
+| Ties | 102 | 多个同等正确回答及 margin |
+
+普通样本通常是一条 chosen 加三条 rejected。Ties 样本可能包含多个正确回答和更多
+候选，因此不能强制改成简单 A/B 任务。
+
+## 0.4 一条实验明细是什么样的
+
+JudgeBench 明细保存 `item_id`、来源、原始/交换方向、gold label、模型选择、A/B
+概率、实际模型版本、延迟、token usage、费用，以及完整请求与响应。例如某条 Jev
+结果可能是 `label=B, choice=A, P(A)=0.58, P(B)=0.42`，这是一条明确的错误判断；
+同一 `item_id` 的另一个 orientation 用于判断它是否还存在位置不一致。
+
+RewardBench 2 rating 明细的 `scores` 顺序固定为 chosen 在前、rejected 在后，并
+保存每个候选在五档 rubric 上的完整概率分布。Ranking 明细保存确定性 shuffle、
+正确位置、选择位置以及 A/B/C/D 全概率。这使读者可以不用重新调用 API，直接重算
+所有表格或检查某个失败案例。
+
+## 0.5 复现命令
+
+```bash
+# 离线重算已有结果，不产生 API 费用
+PYTHONPATH=src python -m jev_eval.cli analyze \
+  --run-dir artifacts/runs/judgebench-jev-1.14
+python scripts/analyze_rewardbench2_rating.py \
+  --results artifacts/runs/rewardbench2-jev-rating/results.jsonl \
+  --output /tmp/rb2-rating-metrics.json
+
+# 有 OPENROUTER_API_KEY 时重新请求模型
+PYTHONPATH=src python -m jev_eval.cli run \
+  --config configs/experiments/judgebench_jev.toml
+python scripts/run_rewardbench2_jev_rating.py \
+  --data data/benchmarks/rewardbench2.jsonl \
+  --output artifacts/runs/rewardbench2-jev-rating-rerun/results.jsonl
+```
 
 ## 1. 研究问题
 

@@ -10,6 +10,13 @@ The research focus is evaluation, not a claim that Jev should replace an LLM.
 The report separately surveys existing Jev applications so that benchmark
 results can be interpreted in the wider decision-model landscape.
 
+## Results
+
+Start with the [full Chinese research report](report/report.md) and the
+[experiment-results index](artifacts/README.md). The repository commits every
+per-judgment result, not just aggregate scores. Current experiments contain
+5,728 real API judgments across JudgeBench and RewardBench 2.
+
 ## What works now
 
 - OpenRouter Decisions API adapter for Jev and compatible decision models
