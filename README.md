@@ -12,8 +12,9 @@ results can be interpreted in the wider decision-model landscape.
 
 ## Results
 
-Start with the [full Chinese research report](report/report.md) and the
-[experiment-results index](artifacts/README.md). The repository commits every
+Choose the [research report](report/report.md) for technical review or the
+[tutorial/presentation report](report/tutorial-report.md) for a guided explanation.
+The [experiment-results index](artifacts/README.md) links every detail. The repository commits every
 per-judgment result, not just aggregate scores. Current experiments contain
 5,728 real API judgments across JudgeBench and RewardBench 2.
 
