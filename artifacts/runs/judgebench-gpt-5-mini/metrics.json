@@ -1,0 +1,17 @@
+{
+  "judgments": 700,
+  "items": 350,
+  "accuracy": 0.8571428571428571,
+  "strict_swap_accuracy": 0.8057142857142857,
+  "swap_consistency": 0.8971428571428571,
+  "brier_score": 0.10552471428571429,
+  "ece": 0.07147142857142855,
+  "latency_ms_p50": 14160.503388004145,
+  "latency_ms_p95": 46978.08623828168,
+  "reported_total_cost": 2.3001208,
+  "category_accuracy": {
+    "livebench": 0.9123376623376623,
+    "livecodebench": 0.9642857142857143,
+    "mmlu": 0.7727272727272727
+  }
+}

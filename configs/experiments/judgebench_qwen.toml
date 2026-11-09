@@ -1,0 +1,21 @@
+[experiment]
+name = "judgebench-qwen3-30b-a3b"
+dataset = "data/benchmarks/judgebench-gpt.jsonl"
+output_dir = "artifacts/runs/judgebench-qwen3-30b-a3b-v2"
+swap_positions = true
+concurrency = 8
+limit = 0
+
+[model]
+adapter = "openrouter_chat"
+id = "qwen/qwen3-30b-a3b-instruct-2507"
+base_url = "https://openrouter.ai/api/v1/chat/completions"
+api_key_env = "OPENROUTER_API_KEY"
+secrets_file = "configs/secrets.toml"
+timeout_seconds = 120
+temperature = 0.0
+prompt_version = "pairwise-v2-candidate-label"
+
+[metrics]
+ece_bins = 15
+

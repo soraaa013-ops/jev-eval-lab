@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jev-eval-lab"
+version = "0.1.0"
+description = "Reproducible evaluation of typed decision models and LLM judges"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Jev Eval Lab contributors" }]
+dependencies = []
+
+[project.scripts]
+jev-eval = "jev_eval.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jev_eval"]
+

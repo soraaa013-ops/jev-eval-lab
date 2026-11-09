@@ -1,0 +1,20 @@
+[experiment]
+name = "jev-sample"
+dataset = "data/samples/pairwise.jsonl"
+output_dir = "artifacts/runs/jev-sample"
+swap_positions = true
+concurrency = 4
+limit = 0
+
+[model]
+adapter = "openrouter_decisions"
+id = "typesafe/jev-1.14"
+base_url = "https://openrouter.ai/api/alpha/decisions"
+api_key_env = "OPENROUTER_API_KEY"
+secrets_file = "configs/secrets.toml"
+timeout_seconds = 60
+question = "Which candidate better satisfies the task in the context? Judge correctness before style."
+
+[metrics]
+ece_bins = 10
+

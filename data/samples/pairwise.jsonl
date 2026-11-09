@@ -1,0 +1,4 @@
+{"id":"synthetic-math-1","context":"Question: What is 17 + 25? Prefer the correct and direct answer.","response_a":"42","response_b":"43","label":"A","category":"math","source":"synthetic"}
+{"id":"synthetic-fact-1","context":"Question: Is water H2O? Prefer factual correctness.","response_a":"No, water is CO2.","response_b":"Yes. A water molecule contains two hydrogen atoms and one oxygen atom.","label":"B","category":"knowledge","source":"synthetic"}
+{"id":"synthetic-instruction-1","context":"Instruction: Answer with exactly one word: blue.","response_a":"blue","response_b":"The requested word is blue.","label":"A","category":"instruction_following","source":"synthetic"}
+

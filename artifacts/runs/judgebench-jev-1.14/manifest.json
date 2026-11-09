@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-11-09T01:47:23.526329+00:00",
+  "tool_version": "0.1.0",
+  "python": "3.12.3",
+  "config_path": "/home/ubuntu/workspace/projects/jev-eval-lab/configs/experiments/judgebench_jev.toml",
+  "config": {
+    "experiment": {
+      "name": "judgebench-jev-1.14",
+      "dataset": "data/benchmarks/judgebench-gpt.jsonl",
+      "output_dir": "artifacts/runs/judgebench-jev-1.14",
+      "swap_positions": true,
+      "concurrency": 16,
+      "limit": 0
+    },
+    "model": {
+      "adapter": "openrouter_decisions",
+      "id": "typesafe/jev-1.14",
+      "base_url": "https://openrouter.ai/api/alpha/decisions",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "secrets_file": "configs/secrets.toml",
+      "timeout_seconds": 90,
+      "question": "Which candidate response is factually and logically correct for the question in the context? Prefer correctness over style, length, or confidence."
+    },
+    "metrics": {
+      "ece_bins": 15
+    }
+  },
+  "dataset_sha256": "e93afb67adad4fa12d1f6f34cb07e82f760682497efe7c4fd6f6c3147d4a3851",
+  "planned_judgments": 700
+}

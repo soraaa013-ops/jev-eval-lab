@@ -1,0 +1,14 @@
+[experiment]
+name = "smoke"
+dataset = "data/samples/pairwise.jsonl"
+output_dir = "artifacts/runs/smoke"
+swap_positions = true
+limit = 0
+
+[model]
+adapter = "mock"
+id = "deterministic/mock-v1"
+
+[metrics]
+ece_bins = 10
+

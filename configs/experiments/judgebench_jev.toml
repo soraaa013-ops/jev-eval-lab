@@ -1,0 +1,20 @@
+[experiment]
+name = "judgebench-jev-1.14"
+dataset = "data/benchmarks/judgebench-gpt.jsonl"
+output_dir = "artifacts/runs/judgebench-jev-1.14"
+swap_positions = true
+concurrency = 16
+limit = 0
+
+[model]
+adapter = "openrouter_decisions"
+id = "typesafe/jev-1.14"
+base_url = "https://openrouter.ai/api/alpha/decisions"
+api_key_env = "OPENROUTER_API_KEY"
+secrets_file = "configs/secrets.toml"
+timeout_seconds = 90
+question = "Which candidate response is factually and logically correct for the question in the context? Prefer correctness over style, length, or confidence."
+
+[metrics]
+ece_bins = 15
+

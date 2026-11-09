@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this evaluation framework, please cite this repository."
+title: "Jev Eval Lab"
+type: software
+version: 0.1.0
+date-released: 2026-11-09
+license: Apache-2.0
+
