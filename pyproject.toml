@@ -12,6 +12,11 @@ license = { text = "Apache-2.0" }
 authors = [{ name = "Jev Eval Lab contributors" }]
 dependencies = []
 
+[project.optional-dependencies]
+analysis = ["matplotlib>=3.9,<4", "numpy>=2,<3"]
+datasets = ["pyarrow>=17,<24"]
+local-models = ["torch>=2.5", "transformers>=4.51,<5", "safetensors>=0.4"]
+
 [project.scripts]
 jev-eval = "jev_eval.cli:main"
 

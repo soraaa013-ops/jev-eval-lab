@@ -20,6 +20,7 @@ synthetic smoke dataset must not be used to claim model quality.
 | Strict swapped-order accuracy | 0.7057 |
 | Swap consistency | 0.8486 |
 | Brier score | 0.1439 |
+| Log loss | 0.4427 |
 | Expected calibration error | 0.0410 |
 | Latency p50 (ms) | 435.5043 |
 | Latency p95 (ms) | 522.8261 |

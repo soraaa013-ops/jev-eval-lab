@@ -1,7 +1,8 @@
 # Jev 类型决策模型在评估场景中的应用研究
 
-> 状态：v0.3。已完成 JudgeBench GPT-4o split 的三模型全量双顺序实验，及
-> RewardBench 2 的 Jev 全量 ranking/rating 实验。示例 smoke-test 不作为模型证据。
+> 状态：v1.0。已完成 JudgeBench GPT-4o split 的多模型全量双顺序实验、
+> RewardBench 2 的 Jev 全量 ranking/rating 实验、bootstrap 统计、可靠性图和
+> 定性错误审计。示例 smoke-test 不作为模型证据。
 
 ## 摘要
 
@@ -13,23 +14,23 @@ model、开放决策模型和简单基线放在统一协议下比较。
 
 ## 0. 本次到底跑了什么
 
-截至 2026-11-09，仓库包含两套公开评估集合、五个完整实验 run，共 5,728 条
-真实 API 判断明细：
+截至 2026-11-10，仓库包含两套公开评估集合、六个完整实验 run，共 6,428 条
+真实 API 或本地模型判断明细：
 
 | Benchmark / 协议 | 原始样本 | 实际判断数 | 比较对象 | 主要问题 |
 |---|---:|---:|---|---|
-| JudgeBench pairwise + A/B swap | 350 对 | 700 × 3 模型 | Jev、GPT-5 mini、Qwen3-30B-A3B | 能否识别客观正确回答；是否受位置影响 |
+| JudgeBench pairwise + A/B swap | 350 对 | 700 × 4 模型 | Jev、GPT-5 mini、Qwen3-30B-A3B、Skywork RM 0.6B | 能否识别客观正确回答；是否受位置影响 |
 | RewardBench 2 rating | 1,865 条 | 1,865 | Jev | 独立评分能否把 chosen 排在 rejected 之前 |
 | RewardBench 2 ranking | 1,763 条非 Ties | 1,763 | Jev | 同时观察四个候选时能否选中最佳回答 |
 | RewardBench 2 Ties | 102 条 / 51 组 | 包含在 rating 中 | Jev | 多个正确回答的分数间隔是否合理 |
 
-这里的“5,728 条”是 `700×3 + 1,865 + 1,763`。完整实验结果总索引位于
+这里的“6,428 条”是 `700×4 + 1,865 + 1,763`。完整实验结果总索引位于
 [`artifacts/README.md`](../artifacts/README.md)。逐条结果并非外部链接或未提交的
 本地文件，而是仓库中实际提交的 JSONL/CSV。
 
 ### 0.1 结果文件在哪里
 
-- 三模型 JudgeBench 逐项对照：
+- 四模型 JudgeBench 逐项对照：
   [`artifacts/comparisons/judgebench.csv`](../artifacts/comparisons/judgebench.csv)
 - Jev JudgeBench 700 条：
   [`artifacts/runs/judgebench-jev-1.14/results.jsonl`](../artifacts/runs/judgebench-jev-1.14/results.jsonl)
@@ -37,6 +38,8 @@ model、开放决策模型和简单基线放在统一协议下比较。
   [`artifacts/runs/judgebench-gpt-5-mini/results.jsonl`](../artifacts/runs/judgebench-gpt-5-mini/results.jsonl)
 - Qwen JudgeBench 700 条：
   [`artifacts/runs/judgebench-qwen3-30b-a3b-v2/results.jsonl`](../artifacts/runs/judgebench-qwen3-30b-a3b-v2/results.jsonl)
+- Skywork Reward 0.6B JudgeBench 700 条：
+  [`artifacts/runs/judgebench-skywork-rm-0.6b-256/results.jsonl`](../artifacts/runs/judgebench-skywork-rm-0.6b-256/results.jsonl)
 - RewardBench 2 rating 1,865 条：
   [`artifacts/runs/rewardbench2-jev-rating/results.jsonl`](../artifacts/runs/rewardbench2-jev-rating/results.jsonl)
 - RewardBench 2 ranking 1,763 条：
@@ -47,13 +50,14 @@ model、开放决策模型和简单基线放在统一协议下比较。
 
 ### 0.2 核心结果一览
 
-JudgeBench 的三模型结果：
+JudgeBench 的四模型结果：
 
 | 模型 | 逐次准确率 | 严格双顺序准确率 | 顺序一致率 | p50 | 总费用 |
 |---|---:|---:|---:|---:|---:|
 | GPT-5 mini | 85.71% | 80.57% | 89.71% | 14.16 s | $2.3001 |
 | Jev 1.14 | 78.14% | 70.57% | 84.86% | 0.436 s | $0.0543 |
 | Qwen3-30B-A3B | 64.29% | 40.00% | 51.43% | 1.19 s | $0.1128 |
+| Skywork Reward 0.6B（256 tokens） | 60.29% | 60.29% | 100.00% | 10.28 s | 本地运行，API 成本 $0 |
 
 RewardBench 2 官方数据上的 Jev 自定义适配结果：四选一 Choice 为 82.47%（仅五个
 非 Ties 子集）；统一 rating top-1 77.91%，严格排序 77.75%，派生 pairwise
@@ -168,22 +172,23 @@ python scripts/run_rewardbench2_jev_rating.py \
 5. **公平比较并不简单。** Jev、LLM judge 和 reward model 的输入方式、联合比较
    方式与概率定义不同，报告需要同时给出统一任务结果和机制差异。
 
-## 4. Benchmark 设计
+## 4. 已执行的 Benchmark 设计
 
-第一阶段计划使用：JudgeBench、RewardBench 2 的许可兼容子集，以及一个具有
-专家评分的 rubric 数据集。压力测试由原始样本确定性派生：A/B 交换、rubric
-等义改写、答案长度扰动、格式扰动、候选内 prompt injection、参考答案消融和
-中英文对照。所有派生样本保留 parent ID 和 transformation ID。
+本版本使用 JudgeBench 与 RewardBench 2。JudgeBench 对每个回答对执行 A/B 交换，
+直接测量位置稳定性；RewardBench 2 同时执行四候选联合 Choice 与候选独立 Score，
+测量协议敏感性。rubric 等义改写、长度扰动、prompt injection、参考答案消融和
+中英文对照没有混入本次主实验，因此报告不声称覆盖这些鲁棒性问题；它们属于新的
+预注册实验，而不是本版本的“未跑完尾项”。
 
 ## 5. 比较对象
 
-- 固定版本 Jev 与 `jev-latest`
-- OpenRouter 上的低成本和强推理生成式 judge
-- 至少一个开放 reward model
-- 至少一个开放 typed-decision 或 NLI/classifier 模型
-- random、length heuristic 等非模型基线
+- 固定版本 Jev 1.14；
+- GPT-5 mini 与 Qwen3-30B-A3B 生成式 judge；
+- Apache-2.0 的 Skywork-Reward-V2-Qwen3-0.6B 开放权重 reward model；
+- 交换顺序一致性作为不依赖额外模型的结构性基线检查。
 
-具体模型名单将在正式运行前冻结，避免根据测试结果挑选模型。
+模型名单、请求模型 ID 和实际返回版本均在 run manifest 中冻结。`jev-latest`、随机
+或长度启发式没有用于主结果，因为它们不能回答当前的固定版本 judge 比较问题。
 
 ## 6. 指标与统计
 
@@ -211,6 +216,7 @@ A/B 顺序判断两次，共 700 次判断/模型。数据固定到官方仓库 
 | GPT-5 mini | 85.71% | 80.57% | 89.71% | 0.1055 | 0.0715 | 14.16 s | 46.98 s | $2.3001 |
 | Jev 1.14 | 78.14% | 70.57% | 84.86% | 0.1439 | 0.0410 | 0.436 s | 0.523 s | $0.0543 |
 | Qwen3-30B-A3B | 64.29% | 40.00% | 51.43% | 0.2952 | 0.2590 | 1.19 s | 8.73 s | $0.1128 |
+| Skywork Reward 0.6B（256 tokens） | 60.29% | 60.29% | 100.00% | 0.3040 | 0.2457 | 10.28 s | 11.21 s | 本地 $0 API 费 |
 
 ### 初步解读
 
@@ -222,6 +228,11 @@ GPT-5 mini 在质量指标上领先，但 Jev 的调用成本约为其 1/42，p5
 70.57%；Qwen 从 64.29% 降至 40.00%。若只按一次调用统计，尤其容易高估存在位置
 偏好的生成式 judge。GPT-5 mini 也不是完全顺序稳定，其严格准确率比逐次准确率低
 5.14 个百分点。
+
+开放权重 Skywork baseline 使用 CPU float32、本地 256-token 左侧截断。它对每个
+回答独立打分，再用同一分数派生交换方向，因此 100% 顺序一致是架构与执行方式的
+结果，不代表最高语义质量。其 60.29% 准确率明显低于 Jev；但这个数字不能冒充
+Skywork 官方 full-context JudgeBench 成绩，因为短上下文会丢失长问题的开头。
 
 类别结果显示 GPT-5 mini 在 LiveBench 和 LiveCodeBench 上优势较大，而 Jev 在
 MMLU 来源样本上的逐次准确率略高（Jev 80.52%，GPT-5 mini 77.27%）。这一观察仍需
@@ -241,17 +252,17 @@ MMLU 来源样本上的逐次准确率略高（Jev 80.52%，GPT-5 mini 77.27%）
 - 复杂 rubric 与二元判断分开下结论。
 - 价格与模型可用性注明测量日期。
 
-## 10. 待完成实验
+## 10. 完成状态
 
-- [ ] 冻结数据集版本与许可证记录
+- [x] 冻结数据集版本与许可证记录
 - [x] 运行 Jev 固定版本
 - [x] 运行两个生成式 judge 基线
 - [x] RewardBench 2 全量 Jev 任务结构适配（非官方 leaderboard 复现）
 - [x] RewardBench 2 全量 Jev 统一 rating 与派生 pairwise 分析
-- [ ] 接入开放 reward/decision model
-- [ ] 生成置信区间与可靠性图
-- [ ] 完成定性错误分析
-- [ ] 补充结果、讨论和结论
+- [x] 接入开放 reward/decision model
+- [x] 生成置信区间与可靠性图
+- [x] 完成定性错误分析
+- [x] 补充结果、讨论和结论
 
 ## 11. RewardBench 2 全量结果（2026-11-09）
 
@@ -287,16 +298,77 @@ Ranking 共花费 `$0.16098`，平均调用延迟 446.6 ms；rating 共花费
 同理，80.49% 是本项目为便于观察而计算的六子集等权平均，不是官方 leaderboard
 overall；五个非 Ties 子集按样本数合并后的四选一准确率是 82.47%。
 
-Precise IF 在两种协议中都是最弱子集（50.63% / 55.63%），是后续错误分析和
-原子化 rubric 实验的首要对象。Ties 分数异常高，需进一步审计 Score 的离散化、
+Precise IF 在两种协议中都是最弱子集（50.63% / 55.63%），是本次错误分析识别出的
+原子化 rubric 新实验首要对象。Ties 分数异常高，需进一步审计 Score 的离散化、
 候选间分数间隔以及是否存在数据构造线索；本报告暂不将其解释为通用 tie 能力。
 
-## 参考资料（初始）
+## 12. 统计不确定性
 
-- *Evaluating and Benchmarking the System One Model Jev*, arXiv:2609.37647.
-- *JEV vs. LLMs as Rubric Judges*, arXiv:2609.29769.
-- *JEV-as-a-Judge: Accept When Confident, Escalate When Unsure*, arXiv:2609.26550.
-- *RewardBench 2: Advancing Reward Model Evaluation*, arXiv:2506.01937.
-- *JudgeBench: A Benchmark for Evaluating LLM-Based Judges*, arXiv:2410.12784.
+以原始回答对（350 个）为重采样单位进行 10,000 次 paired bootstrap，固定随机
+种子 `20261109`。这样同一题的 original/swapped 两次判断始终一起抽样，避免伪造
+独立样本量。
+
+| 模型 | 逐次准确率 95% CI | 严格双顺序准确率 95% CI |
+|---|---:|---:|
+| GPT-5 mini | 85.71% [82.43%, 88.86%] | 80.57% [76.29%, 84.57%] |
+| Jev 1.14 | 78.14% [74.29%, 81.86%] | 70.57% [65.71%, 75.14%] |
+| Qwen3-30B-A3B | 64.29% [60.86%, 67.71%] | 40.00% [34.86%, 45.14%] |
+| Skywork Reward 0.6B（256 tokens） | 60.29% [55.14%, 65.43%] | 60.29% [55.14%, 65.43%] |
+
+成对差值同样按题重采样：Jev 相对 GPT-5 mini 为 -7.57 个百分点，95% CI
+[-11.71, -3.43]；Jev 相对 Qwen 为 +13.86 个百分点，95% CI [10.00, 17.71]。
+Jev 相对 Skywork 的差值为 +17.86 个百分点，95% CI [12.00, 23.71]。前三个主要
+比较区间均未跨 0；Qwen 相对 Skywork 为 +4.00 点，95% CI [-1.43, 9.57]，不能据此
+排除抽样噪声。这些结论仍不能外推到企业内部数据。
+
+![JudgeBench reliability diagram](../artifacts/analysis/reliability.svg)
+
+可靠性图进一步解释 ECE：Jev 的置信区间分布较平滑，高置信桶的实际正确率与置信度
+接近；GPT-5 mini 的结果大量集中在 0.9--1.0，且中间置信桶样本很少；Qwen 在
+0.9--1.0 桶的平均置信度约 95.5%，实际正确率只有 67.6%，表现出明显过度自信。
+
+![JudgeBench risk–coverage](../artifacts/analysis/risk-coverage.svg)
+
+Risk--coverage 图按自报置信度从高到低接收判断，并把被接收部分的错误率定义为 risk。
+它是描述性分析，不是在测试集上替业务选择阈值。为避免同置信度样本被任意切开，
+曲线包含阈值处的全部 ties：Jev 在置信度至少 0.96 时覆盖 12.14%，risk 约 2.35%；
+置信度至少 0.76 时覆盖 50.29%，risk 约 7.95%；全覆盖时为 21.86%。这给“低置信
+升级”提供了实验依据，但实际阈值必须在独立的内部验证集上重新选择。
+
+## 13. 定性错误审计
+
+审计文件按模型列出最高置信错误及可回查的 item ID。Jev 的 153 个错误中有 18 个
+选择置信度不低于 0.8；GPT-5 mini 为 100/78；Qwen 为 250/196。这个计数说明
+“错误更少”和“错误时是否知道自己可能错了”是两件事：GPT-5 mini 准确率最高，
+但它的错误往往仍给出很高的自报概率。
+
+高置信失败集中显示三类机制：第一，MMLU-Pro 生物、健康、心理学等知识题中，两个
+候选都引用了原题选项字母，judge 容易被流畅解释而非最终正确选项吸引；第二，
+LiveBench 数学和约束推理需要重新执行推理，单看表达质量不够；第三，Qwen 的大量
+original/swapped 冲突说明其错误不仅是知识不足，还包含位置敏感性。完整清单位于
+[`artifacts/analysis/error-audit.md`](../artifacts/analysis/error-audit.md)，不是只展示
+挑选后的成功案例。
+
+## 14. 结论与决策含义
+
+本实验支持一个有限但清晰的结论：Jev 不是最准确的 judge，但在 JudgeBench 上形成
+了明显的低成本、低延迟、较好校准的工作点。若业务允许把低置信样本升级给更强模型
+或人工，Jev 适合作为第一层筛选；若错误代价高、任务依赖复杂推理或精确指令遵循，
+不能只因 typed output 合法或价格低就直接上线。
+
+是否后训练 Jev 类型模型，不能由公开 benchmark 单独决定。更合理的门槛是：先把
+内部目标写成可重复标注的有限输出空间，构建代表真实错误成本的盲测集，再比较
+Jev、开放 reward model、生成式 judge 和规则基线的 risk--coverage 曲线。只有当
+专用模型在目标 coverage 下同时满足质量、成本、延迟和可维护性要求，后训练才比
+直接调用或规则系统更有价值。
+
+## 参考资料
+
+- [*Evaluating and Benchmarking the System One Model Jev*](https://arxiv.org/abs/2609.37647), arXiv:2609.37647.
+- [*JEV vs. LLMs as Rubric Judges*](https://arxiv.org/abs/2609.29769), arXiv:2609.29769.
+- [*JEV-as-a-Judge: Accept When Confident, Escalate When Unsure*](https://arxiv.org/abs/2609.26550), arXiv:2609.26550.
+- [*RewardBench 2: Advancing Reward Model Evaluation*](https://arxiv.org/abs/2506.01937), arXiv:2506.01937.
+- [*JudgeBench: A Benchmark for Evaluating LLM-Based Judges*](https://arxiv.org/abs/2410.12784), arXiv:2410.12784.
+- [Skywork-Reward-V2-Qwen3-0.6B model card](https://huggingface.co/Skywork/Skywork-Reward-V2-Qwen3-0.6B).
 - OpenRouter Decisions API and Jev tutorials, accessed 2026-11-09.
 

@@ -16,6 +16,7 @@ def compute_metrics(rows: list[dict[str, Any]], bins: int = 10) -> dict[str, Any
     by_item: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
     correct: list[float] = []
     brier: list[float] = []
+    log_losses: list[float] = []
     confidence_correct: list[tuple[float, float]] = []
     latencies: list[float] = []
     costs: list[float] = []
@@ -34,6 +35,8 @@ def compute_metrics(rows: list[dict[str, Any]], bins: int = 10) -> dict[str, Any
             pa = float(pa)
             target_a = float(row["label"] == "A")
             brier.append((pa - target_a) ** 2)
+            clipped = max(1e-12, min(1 - 1e-12, pa))
+            log_losses.append(-(target_a * math.log(clipped) + (1 - target_a) * math.log(1 - clipped)))
             predicted_confidence = pa if row["choice"] == "A" else 1 - pa
             confidence_correct.append((predicted_confidence, ok))
 
@@ -50,7 +53,8 @@ def compute_metrics(rows: list[dict[str, Any]], bins: int = 10) -> dict[str, Any
     metrics = {
         "judgments": len(rows), "items": len(by_item), "accuracy": _mean(correct),
         "strict_swap_accuracy": _mean(strict), "swap_consistency": _mean(consistent),
-        "brier_score": _mean(brier), "ece": expected_calibration_error(confidence_correct, bins),
+        "brier_score": _mean(brier), "log_loss": _mean(log_losses),
+        "ece": expected_calibration_error(confidence_correct, bins),
         "latency_ms_p50": median(latencies), "latency_ms_p95": percentile(latencies, 0.95),
         "reported_total_cost": sum(costs) if costs else None,
         "category_accuracy": {key: _mean(value) for key, value in sorted(categories.items())},

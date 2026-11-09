@@ -165,7 +165,7 @@ synthetic smoke dataset must not be used to claim model quality.
 
 - Model requested: `{manifest['config']['model']['id']}`
 - Adapter: `{manifest['config']['model']['adapter']}`
-- Dataset SHA-256: `{manifest['dataset_sha256']}`
+- Dataset SHA-256: `{manifest.get('dataset_sha256', manifest.get('data_sha256', 'n/a'))}`
 - Created: {manifest['created_at']}
 
 ## Aggregate metrics
@@ -178,6 +178,7 @@ synthetic smoke dataset must not be used to claim model quality.
 | Strict swapped-order accuracy | {fmt(metrics['strict_swap_accuracy'])} |
 | Swap consistency | {fmt(metrics['swap_consistency'])} |
 | Brier score | {fmt(metrics['brier_score'])} |
+| Log loss | {fmt(metrics.get('log_loss'))} |
 | Expected calibration error | {fmt(metrics['ece'])} |
 | Latency p50 (ms) | {fmt(metrics['latency_ms_p50'])} |
 | Latency p95 (ms) | {fmt(metrics['latency_ms_p95'])} |

@@ -12,4 +12,5 @@ artifacts/runs/*
 !artifacts/runs/judgebench-gpt-5-mini/
 !artifacts/runs/rewardbench2-jev-rating/
 !artifacts/runs/rewardbench2-jev-ranking/
+!artifacts/runs/judgebench-skywork-rm-0.6b-256/
 

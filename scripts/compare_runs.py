@@ -36,7 +36,7 @@ def main() -> None:
     rows = sorted(records.values(), key=lambda x: (str(x["item_id"]), str(x["orientation"])))
     fields = list(rows[0])
     with output.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     print(f"wrote {len(rows)} judgments to {output}")

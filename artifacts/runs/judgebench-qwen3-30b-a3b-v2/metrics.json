@@ -5,6 +5,7 @@
   "strict_swap_accuracy": 0.4,
   "swap_consistency": 0.5142857142857142,
   "brier_score": 0.2952004285714286,
+  "log_loss": 3.1571343739903557,
   "ece": 0.25898571428571426,
   "latency_ms_p50": 1191.2210639857221,
   "latency_ms_p95": 8725.64724067051,

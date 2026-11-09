@@ -182,8 +182,9 @@ JudgeBench 专门测试“模型是否能够识别带有细微错误的回答”
 | LiveBench | 154 | Reasoning 98、Math 56 |
 | LiveCodeBench | 42 | 正确代码与包含缺陷的代码回答 |
 
-每个模型都判断原始顺序和交换顺序，因此每模型产生 700 条结果，三个模型合计
-2,100 条。
+每个模型都产生原始顺序和交换顺序两行，因此每模型有 700 条结果，四模型合计
+2,800 条。三个 hosted judge 分别执行两次；Skywork reward model 独立评分 A/B
+一次，再从同一对分数派生交换方向。
 
 数据文件：[`data/benchmarks/judgebench-gpt.jsonl`](../data/benchmarks/judgebench-gpt.jsonl)
 
@@ -210,9 +211,10 @@ RewardBench 2 测试 reward model 或 judge 对人类偏好、事实正确性、
 | JudgeBench pairwise + swap | Jev 1.14 | 700 |
 | JudgeBench pairwise + swap | GPT-5 mini | 700 |
 | JudgeBench pairwise + swap | Qwen3-30B-A3B | 700 |
+| JudgeBench pairwise + swap | Skywork Reward V2 Qwen3 0.6B（本地 256 tokens） | 700 |
 | RewardBench 2 rating | Jev 1.14 | 1,865 |
 | RewardBench 2 ranking | Jev 1.14 | 1,763 |
-| **总计** | | **5,728** |
+| **总计** | | **6,428** |
 
 RewardBench 2 的 ranking 不包含 102 条 Ties，因为官方协议要求 Ties 使用 rating。
 
@@ -380,13 +382,15 @@ CANDIDATE B: ...
 Qwen 初版 prompt 曾返回原题答案 `D`，而不是候选 A/B。框架拒绝了这个非法结果，
 随后冻结为 `pairwise-v2-candidate-label` prompt。失败 run 没有进入正式统计。
 
-### 9.5 三个模型是否使用完全相同的内部计算？
+### 9.5 四个模型是否使用完全相同的内部计算？
 
 不是。它们接收相同的题目与候选、完成相同的最终任务，但输出机制不同：
 
 - Jev 返回原生 Choice 分布；
 - 生成式模型生成符合 JSON Schema 的判断和自报概率；
 - GPT-5 mini 还可能消耗 reasoning tokens。
+- Skywork reward model 对每个 prompt/response 输出一个标量，A/B 概率由
+  `sigmoid(score_A - score_B)` 得到；交换方向不重复推理。
 
 因此 accuracy 是相对可比的任务结果，但概率质量不能被解释为完全相同的内部量。
 
@@ -578,6 +582,7 @@ Expected Calibration Error 检查“模型说自己有多确定”是否匹配�
 | GPT-5 mini | 85.71% | 80.57% | 89.71% | 0.1055 | 0.0715 | 14.16s | 46.98s | $2.3001 |
 | Jev 1.14 | 78.14% | 70.57% | 84.86% | 0.1439 | 0.0410 | 0.436s | 0.523s | $0.0543 |
 | Qwen3-30B-A3B | 64.29% | 40.00% | 51.43% | 0.2952 | 0.2590 | 1.19s | 8.73s | $0.1128 |
+| Skywork Reward 0.6B（256 tokens） | 60.29% | 60.29% | 100.00% | 0.3040 | 0.2457 | 10.28s | 11.21s | 本地 $0 API 费 |
 
 ### 怎样讲解这张表？
 
@@ -592,6 +597,12 @@ Expected Calibration Error 检查“模型说自己有多确定”是否匹配�
 
 第四，Jev 的 ECE 最低不等于它最准确。Accuracy 问“选对多少”，ECE 问“概率是否
 匹配自己的正确率”，两者是不同维度。
+
+第五，Skywork 的 100% 顺序一致率来自独立打分机制：交换 A/B 只会交换同一对分数，
+所以严格准确率等于逐次准确率。该 run 为 CPU float32、256-token 左侧截断，结果
+是 60.29%，95% CI [55.14%, 65.43%]。短上下文会损失长题信息，因此它是资源受限
+的可复现本地 baseline，不是模型官方 full-context 成绩；“本地 $0 API 费”也不等于
+计算资源免费。
 
 ## 16. RewardBench 2 跑出了什么？
 
@@ -675,7 +686,7 @@ RewardBench 2 rating 的一条结果可能是：
 - Jev 在所有企业数据上都具有相同校准；
 - Jev 可以取代所有 LLM judge；
 - 当前实验能够推断两者参数量；
-- RewardBench 2 的 Jev 结果可以与 JudgeBench 三模型结果直接合并排名。
+- RewardBench 2 的 Jev 结果可以与 JudgeBench 四模型结果直接合并排名。
 
 ## 19. 实验的主要限制
 
@@ -683,8 +694,31 @@ RewardBench 2 rating 的一条结果可能是：
 2. JudgeBench 使用 GPT-4o response split，没有同时运行 Claude response split。
 3. Hosted API 无法保证未来 bit-for-bit 重放，尽管已锁定请求模型 ID。
 4. LLM 自报概率不一定是真正的模型后验概率，与 Jev 概率的生成机制不同。
-5. 当前没有 bootstrap 置信区间，接近的子集差异不应过度解读。
-6. Ties 分数异常高，需要审计分数离散化和数据构造信号。
+5. Bootstrap 区间量化了 JudgeBench 的抽样误差，但不能覆盖 hosted model 漂移、
+   prompt 选择或数据分布迁移。
+6. Ties 分数异常高，五档分数离散化和数据构造信号仍限制其外部有效性。
+7. RewardBench 2 的 Jev 协议是本项目适配，不是官方 leaderboard 复现。
+8. Skywork 本地 run 限制为 256 tokens；它适合验证开放模型接入和短上下文基线，
+   不适合推断该模型在完整上下文下的上限。
+
+## 19.1 统计分析和可靠性图是怎样生成的？
+
+`scripts/analyze_statistics.py` 以 `item_id` 为 bootstrap 单位，把 original/swapped
+作为一个不可拆分的 cluster，固定种子后重采样 10,000 次。输出包括单模型准确率
+区间、严格双顺序区间、模型间 paired difference、可靠性桶、risk--coverage、两张
+SVG 图和高置信错误清单。完整机器可读结果位于 `artifacts/analysis/`。
+
+Jev 对 GPT-5 mini 的逐次准确率差为 -7.57 个百分点，95% CI [-11.71, -3.43]；
+Jev 对 Qwen 为 +13.86 个百分点，95% CI [10.00, 17.71]；Jev 对 256-token
+Skywork baseline 为 +17.86 个百分点，95% CI [12.00, 23.71]。这里的区间只描述从
+JudgeBench 这 350 题重复抽样的波动，不包括“换一个 benchmark”造成的系统变化。
+
+## 19.2 错误审计怎样做？
+
+脚本对每个模型筛选 `choice != label` 的判断，再按模型为所选答案报告的概率排序，
+保留 item ID、方向、来源、gold、choice 和 confidence。随后回到冻结的数据文件读取
+原题与两个回答，归纳知识辨别、重新执行推理和位置敏感三类机制。自动清单与人工
+归纳分开保存，避免只凭几个印象深刻的例子下结论。
 
 ## 20. 从结果文件重新得到报告数字
 
@@ -703,6 +737,13 @@ python scripts/analyze_rewardbench2_rating.py \
 python scripts/analyze_rewardbench2_ranking.py \
   --results artifacts/runs/rewardbench2-jev-ranking/results.jsonl \
   --output /tmp/ranking.json
+
+PYTHONPATH=src python scripts/analyze_statistics.py \
+  --run jev=artifacts/runs/judgebench-jev-1.14 \
+  --run gpt5mini=artifacts/runs/judgebench-gpt-5-mini \
+  --run qwen=artifacts/runs/judgebench-qwen3-30b-a3b-v2 \
+  --run skywork=artifacts/runs/judgebench-skywork-rm-0.6b-256 \
+  --output-dir artifacts/analysis
 ```
 
 如果某个表格数字与 analyzer 输出不一致，应以逐条结果和可执行 analyzer 为准，并

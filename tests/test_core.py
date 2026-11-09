@@ -31,6 +31,7 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(metrics["accuracy"], 1)
         self.assertEqual(metrics["strict_swap_accuracy"], 1)
         self.assertEqual(metrics["swap_consistency"], 1)
+        self.assertAlmostEqual(metrics["log_loss"], -__import__("math").log(.8))
 
     def test_decisions_parser_shapes(self):
         body = {"answers": {"winner": {"type": "choice", "choice": "A", "probabilities": {"A": .7, "B": .3}}}}

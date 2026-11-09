@@ -16,7 +16,8 @@ Choose the [research report](report/report.md) for a concise research account or
 [detailed experiment report](report/experiment-report.md) for a complete explanation of how every experiment was run.
 The [experiment-results index](artifacts/README.md) links every detail. The repository commits every
 per-judgment result, not just aggregate scores. Current experiments contain
-5,728 real API judgments across JudgeBench and RewardBench 2.
+6,428 committed judgments across hosted-API and local-model runs on JudgeBench
+and RewardBench 2.
 
 ## What works now
 
@@ -28,6 +29,8 @@ per-judgment result, not just aggregate scores. Current experiments contain
 - accuracy, strict swapped-order accuracy, consistency, Brier score, ECE,
   latency, token use, and reported cost
 - generated Markdown result report
+- clustered bootstrap confidence intervals, paired differences, reliability SVG,
+  and high-confidence error audit
 - configuration-only model replacement using TOML
 
 ## Quick start (no API key)
@@ -82,6 +85,22 @@ full Jev rating and task-compatible winner-selection results under
 adapter, so they are not official leaderboard reproductions; see the main report
 for protocol definitions.
 
+Run the open-weight Apache-2.0 reward-model baseline locally with:
+
+```bash
+pip install -e '.[local-models]'
+PYTHONPATH=src python scripts/run_open_reward_model.py \
+  --max-length 256 \
+  --output artifacts/runs/judgebench-skywork-rm-0.6b-256/results.jsonl
+```
+
+The runner scores each response independently and derives the swapped row from
+the same scores, so this baseline is order invariant by construction. Use
+`--max-length` to make any CPU context-window compromise explicit in its manifest.
+The committed baseline uses 256 tokens and left truncation; use a new output
+directory for a longer-context run. Resume refuses changed model, revision,
+dataset, or context settings instead of mixing protocols in one JSONL file.
+
 ## Dataset contract
 
 Each JSONL row contains an ID, context, two candidate responses, and the gold
@@ -92,9 +111,9 @@ preserved.
 {"id":"example-1","context":"Question or rubric","response_a":"...","response_b":"...","label":"A","category":"reasoning"}
 ```
 
-Benchmark downloaders will be added only after dataset licenses and canonical
-revisions are pinned. The committed sample is synthetic and is not a scientific
-benchmark.
+Both benchmark downloaders pin canonical upstream revisions. See
+[dataset provenance](docs/dataset-provenance.md) for hashes and license caveats.
+The small file under `data/samples/` is synthetic and is not scientific evidence.
 
 ## Reproducibility model
 

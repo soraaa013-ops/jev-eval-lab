@@ -17,7 +17,7 @@ jobs:
           python-version: "3.12"
       - name: Compile and test
         run: |
-          python -m compileall -q src tests
+          python -m compileall -q src scripts tests
           make test
       - name: Verify offline experiment pipeline
         run: make smoke

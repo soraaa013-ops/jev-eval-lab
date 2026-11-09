@@ -1,0 +1,31 @@
+{
+  "created_at": "2026-11-09T08:15:55.786341+00:00",
+  "adapter": "local_bradley_terry_reward_model",
+  "model": "Skywork/Skywork-Reward-V2-Qwen3-0.6B",
+  "requested_revision": "8c14a4e9e6321deaf572544339b16b8d6bbe8886",
+  "resolved_revision": "8c14a4e9e6321deaf572544339b16b8d6bbe8886",
+  "data": "data/benchmarks/judgebench-gpt.jsonl",
+  "data_sha256": "e93afb67adad4fa12d1f6f34cb07e82f760682497efe7c4fd6f6c3147d4a3851",
+  "items": 350,
+  "judgments": 700,
+  "max_length": 256,
+  "dynamic_int8": false,
+  "python": "3.12.3",
+  "torch": "2.7.1+cpu",
+  "transformers": "4.57.6",
+  "config": {
+    "experiment": {
+      "name": "judgebench-skywork-rm-0.6b-256",
+      "dataset": "data/benchmarks/judgebench-gpt.jsonl",
+      "output_dir": "artifacts/runs/judgebench-skywork-rm-0.6b-256",
+      "swap_positions": true
+    },
+    "model": {
+      "adapter": "local_bradley_terry_reward_model",
+      "id": "Skywork/Skywork-Reward-V2-Qwen3-0.6B"
+    },
+    "metrics": {
+      "ece_bins": 10
+    }
+  }
+}

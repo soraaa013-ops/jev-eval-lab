@@ -1,0 +1,120 @@
+{
+  "seed": 20261109,
+  "bootstrap_samples": 10000,
+  "models": {
+    "jev": {
+      "accuracy": {
+        "estimate": 0.7814285714285715,
+        "ci95": [
+          0.7428571428571429,
+          0.8185714285714286
+        ]
+      },
+      "strict_swap_accuracy": {
+        "estimate": 0.7057142857142857,
+        "ci95": [
+          0.6571428571428571,
+          0.7514285714285714
+        ]
+      }
+    },
+    "gpt5mini": {
+      "accuracy": {
+        "estimate": 0.8571428571428571,
+        "ci95": [
+          0.8242857142857143,
+          0.8885714285714286
+        ]
+      },
+      "strict_swap_accuracy": {
+        "estimate": 0.8057142857142857,
+        "ci95": [
+          0.7628571428571429,
+          0.8457142857142858
+        ]
+      }
+    },
+    "qwen": {
+      "accuracy": {
+        "estimate": 0.6428571428571429,
+        "ci95": [
+          0.6085714285714285,
+          0.6771428571428572
+        ]
+      },
+      "strict_swap_accuracy": {
+        "estimate": 0.4,
+        "ci95": [
+          0.3485714285714286,
+          0.4514285714285714
+        ]
+      }
+    },
+    "skywork": {
+      "accuracy": {
+        "estimate": 0.6028571428571429,
+        "ci95": [
+          0.5514285714285714,
+          0.6542857142857142
+        ]
+      },
+      "strict_swap_accuracy": {
+        "estimate": 0.6028571428571429,
+        "ci95": [
+          0.5514285714285714,
+          0.6542857142857142
+        ]
+      }
+    }
+  },
+  "paired": {
+    "jev_minus_gpt5mini": {
+      "accuracy_difference": -0.07571428571428572,
+      "ci95": [
+        -0.11714285714285715,
+        -0.03428571428571429
+      ],
+      "probability_a_better": 0.0
+    },
+    "jev_minus_qwen": {
+      "accuracy_difference": 0.13857142857142857,
+      "ci95": [
+        0.1,
+        0.17714285714285713
+      ],
+      "probability_a_better": 1.0
+    },
+    "jev_minus_skywork": {
+      "accuracy_difference": 0.17857142857142858,
+      "ci95": [
+        0.12,
+        0.23714285714285716
+      ],
+      "probability_a_better": 1.0
+    },
+    "gpt5mini_minus_qwen": {
+      "accuracy_difference": 0.21428571428571427,
+      "ci95": [
+        0.17142857142857143,
+        0.2571428571428571
+      ],
+      "probability_a_better": 1.0
+    },
+    "gpt5mini_minus_skywork": {
+      "accuracy_difference": 0.2542857142857143,
+      "ci95": [
+        0.1957142857142857,
+        0.31142857142857144
+      ],
+      "probability_a_better": 1.0
+    },
+    "qwen_minus_skywork": {
+      "accuracy_difference": 0.04,
+      "ci95": [
+        -0.014285714285714285,
+        0.09571428571428571
+      ],
+      "probability_a_better": 0.9193
+    }
+  }
+}

@@ -6,13 +6,15 @@ When can a typed decision model serve as a reliable evaluator, and how does its
 quality–calibration–robustness–cost frontier compare with generative judges and
 specialized reward models?
 
-## Required comparisons
+## Comparisons executed in v1.0
 
-1. Pairwise preference on objective and human-preference datasets.
-2. Binary criteria such as factuality, groundedness, and policy compliance.
-3. Ordered rubric scoring, analysed separately from binary judgment.
-4. Atomic criteria versus one holistic rubric.
-5. Pinned Jev releases versus a moving `jev-latest` alias.
+1. Pairwise objective correctness with A/B order reversal on JudgeBench.
+2. Multi-candidate winner selection on RewardBench 2.
+3. Ordered rubric scoring, analysed separately from winner selection.
+4. Pinned Jev 1.14 versus two generative judges and one open reward model.
+
+Binary atomic criteria, holistic-versus-atomic ablations, and moving-alias drift
+are separate future studies. They are not silently pooled into this release.
 
 ## Bias controls
 
@@ -25,10 +27,10 @@ specialized reward models?
 
 ## Calibration
 
-Accuracy is not evidence of calibrated probabilities. Report Brier score, log
-loss, ECE with sensitivity to bin count, reliability plots, and risk–coverage
-curves. Thresholds must be selected on a validation split and evaluated once on
-the held-out test split.
+Accuracy is not evidence of calibrated probabilities. This release reports
+Brier score, log loss, 10-bin ECE, reliability plots, and descriptive
+risk–coverage curves. Deployment thresholds are deliberately not selected on
+the test set; they require a separate in-domain validation split.
 
 ## Reproducibility
 

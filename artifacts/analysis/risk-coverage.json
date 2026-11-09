@@ -1,0 +1,250 @@
+{
+  "jev": [
+    {
+      "coverage": 0.12142857142857143,
+      "risk": 0.02352941176470591,
+      "min_confidence": 0.96,
+      "count": 85
+    },
+    {
+      "coverage": 0.21285714285714286,
+      "risk": 0.02684563758389258,
+      "min_confidence": 0.92,
+      "count": 149
+    },
+    {
+      "coverage": 0.30857142857142855,
+      "risk": 0.03703703703703709,
+      "min_confidence": 0.87,
+      "count": 216
+    },
+    {
+      "coverage": 0.41285714285714287,
+      "risk": 0.05536332179930792,
+      "min_confidence": 0.81,
+      "count": 289
+    },
+    {
+      "coverage": 0.5028571428571429,
+      "risk": 0.07954545454545459,
+      "min_confidence": 0.76,
+      "count": 352
+    },
+    {
+      "coverage": 0.6085714285714285,
+      "risk": 0.10093896713615025,
+      "min_confidence": 0.7,
+      "count": 426
+    },
+    {
+      "coverage": 0.7228571428571429,
+      "risk": 0.13438735177865613,
+      "min_confidence": 0.65,
+      "count": 506
+    },
+    {
+      "coverage": 0.8128571428571428,
+      "risk": 0.15817223198594021,
+      "min_confidence": 0.61,
+      "count": 569
+    },
+    {
+      "coverage": 0.9128571428571428,
+      "risk": 0.1799687010954617,
+      "min_confidence": 0.56,
+      "count": 639
+    },
+    {
+      "coverage": 1.0,
+      "risk": 0.21857142857142853,
+      "min_confidence": 0.5,
+      "count": 700
+    }
+  ],
+  "gpt5mini": [
+    {
+      "coverage": 0.1657142857142857,
+      "risk": 0.008620689655172376,
+      "min_confidence": 0.99,
+      "count": 116
+    },
+    {
+      "coverage": 0.4342857142857143,
+      "risk": 0.02631578947368418,
+      "min_confidence": 0.98,
+      "count": 304
+    },
+    {
+      "coverage": 0.4342857142857143,
+      "risk": 0.02631578947368418,
+      "min_confidence": 0.98,
+      "count": 304
+    },
+    {
+      "coverage": 0.4342857142857143,
+      "risk": 0.02631578947368418,
+      "min_confidence": 0.98,
+      "count": 304
+    },
+    {
+      "coverage": 0.7171428571428572,
+      "risk": 0.047808764940239,
+      "min_confidence": 0.95,
+      "count": 502
+    },
+    {
+      "coverage": 0.7171428571428572,
+      "risk": 0.047808764940239,
+      "min_confidence": 0.95,
+      "count": 502
+    },
+    {
+      "coverage": 0.7171428571428572,
+      "risk": 0.047808764940239,
+      "min_confidence": 0.95,
+      "count": 502
+    },
+    {
+      "coverage": 0.8242857142857143,
+      "risk": 0.07105719237435004,
+      "min_confidence": 0.9,
+      "count": 577
+    },
+    {
+      "coverage": 0.9057142857142857,
+      "risk": 0.09779179810725547,
+      "min_confidence": 0.85,
+      "count": 634
+    },
+    {
+      "coverage": 1.0,
+      "risk": 0.1428571428571429,
+      "min_confidence": 0.04,
+      "count": 700
+    }
+  ],
+  "qwen": [
+    {
+      "coverage": 0.26,
+      "risk": 0.3516483516483516,
+      "min_confidence": 1.0,
+      "count": 182
+    },
+    {
+      "coverage": 0.26,
+      "risk": 0.3516483516483516,
+      "min_confidence": 1.0,
+      "count": 182
+    },
+    {
+      "coverage": 0.5471428571428572,
+      "risk": 0.3133159268929504,
+      "min_confidence": 0.95,
+      "count": 383
+    },
+    {
+      "coverage": 0.5471428571428572,
+      "risk": 0.3133159268929504,
+      "min_confidence": 0.95,
+      "count": 383
+    },
+    {
+      "coverage": 0.5471428571428572,
+      "risk": 0.3133159268929504,
+      "min_confidence": 0.95,
+      "count": 383
+    },
+    {
+      "coverage": 0.7457142857142857,
+      "risk": 0.3237547892720306,
+      "min_confidence": 0.9,
+      "count": 522
+    },
+    {
+      "coverage": 0.7457142857142857,
+      "risk": 0.3237547892720306,
+      "min_confidence": 0.9,
+      "count": 522
+    },
+    {
+      "coverage": 0.8342857142857143,
+      "risk": 0.3356164383561644,
+      "min_confidence": 0.8,
+      "count": 584
+    },
+    {
+      "coverage": 0.9842857142857143,
+      "risk": 0.35703918722786643,
+      "min_confidence": 0.7,
+      "count": 689
+    },
+    {
+      "coverage": 1.0,
+      "risk": 0.3571428571428571,
+      "min_confidence": 0.5,
+      "count": 700
+    }
+  ],
+  "skywork": [
+    {
+      "coverage": 0.1,
+      "risk": 0.17142857142857137,
+      "min_confidence": 0.9903288725123384,
+      "count": 70
+    },
+    {
+      "coverage": 0.2,
+      "risk": 0.30000000000000004,
+      "min_confidence": 0.9595230172989695,
+      "count": 140
+    },
+    {
+      "coverage": 0.3,
+      "risk": 0.34285714285714286,
+      "min_confidence": 0.9232170738828486,
+      "count": 210
+    },
+    {
+      "coverage": 0.4,
+      "risk": 0.3571428571428571,
+      "min_confidence": 0.8870238057733784,
+      "count": 280
+    },
+    {
+      "coverage": 0.5,
+      "risk": 0.37142857142857144,
+      "min_confidence": 0.8313156346580176,
+      "count": 350
+    },
+    {
+      "coverage": 0.6,
+      "risk": 0.40476190476190477,
+      "min_confidence": 0.7893388513580589,
+      "count": 420
+    },
+    {
+      "coverage": 0.7,
+      "risk": 0.4122448979591836,
+      "min_confidence": 0.7312222379121323,
+      "count": 490
+    },
+    {
+      "coverage": 0.8,
+      "risk": 0.4214285714285714,
+      "min_confidence": 0.6584973381377209,
+      "count": 560
+    },
+    {
+      "coverage": 0.9,
+      "risk": 0.4095238095238095,
+      "min_confidence": 0.586486423224427,
+      "count": 630
+    },
+    {
+      "coverage": 1.0,
+      "risk": 0.39714285714285713,
+      "min_confidence": 0.5016183796631946,
+      "count": 700
+    }
+  ]
+}
