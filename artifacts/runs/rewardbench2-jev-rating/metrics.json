@@ -1,0 +1,57 @@
+{
+  "ALL": {
+    "samples": 1865,
+    "top1_accuracy": 0.779088471849866,
+    "strict_ranking_accuracy": 0.7774798927613941,
+    "derived_pairwise_accuracy": 0.9311751904243744
+  },
+  "Factuality": {
+    "samples": 475,
+    "top1_accuracy": 0.8147368421052632,
+    "strict_ranking_accuracy": 0.8105263157894737,
+    "derived_pairwise_accuracy": 0.9073684210526316
+  },
+  "Focus": {
+    "samples": 495,
+    "top1_accuracy": 0.8787878787878788,
+    "strict_ranking_accuracy": 0.8767676767676768,
+    "derived_pairwise_accuracy": 0.9474747474747475
+  },
+  "Math": {
+    "samples": 183,
+    "top1_accuracy": 0.7759562841530054,
+    "strict_ranking_accuracy": 0.7759562841530054,
+    "derived_pairwise_accuracy": 0.8706739526411658
+  },
+  "Precise IF": {
+    "samples": 160,
+    "top1_accuracy": 0.55625,
+    "strict_ranking_accuracy": 0.55625,
+    "derived_pairwise_accuracy": 0.73125
+  },
+  "Safety": {
+    "samples": 450,
+    "top1_accuracy": 0.6644444444444444,
+    "strict_ranking_accuracy": 0.6644444444444444,
+    "derived_pairwise_accuracy": 0.7422222222222222
+  },
+  "Ties": {
+    "samples": 102,
+    "top1_accuracy": 0.9901960784313726,
+    "strict_ranking_accuracy": 0.9901960784313726,
+    "derived_pairwise_accuracy": 0.9998257536156124
+  },
+  "Ties_official": {
+    "paired_prompts": 51,
+    "ref_accuracy": 0.9803921568627451,
+    "tied_accuracy": 1.0,
+    "correctness_preferred": 0.9411764705882353,
+    "correctness_preferred_hard": 0.9411764705882353,
+    "margin_score": 0.8526819267071952,
+    "official_score": 0.9791150545611895
+  },
+  "runtime": {
+    "total_cost": 0.197964438,
+    "mean_latency_ms": 475.1772541531247
+  }
+}

@@ -67,6 +67,11 @@ python scripts/prepare_judgebench.py --split gpt --output data/benchmarks/judgeb
 jev-eval run --config configs/experiments/judgebench_jev.toml
 ```
 
+RewardBench 2 has separate reproducible scripts because its native structure is
+multi-candidate and its Ties subset has a special metric. The repository includes
+full Jev rating and official-style winner-selection results under
+`artifacts/runs/rewardbench2-*`; see the main report for protocol definitions.
+
 ## Dataset contract
 
 Each JSONL row contains an ID, context, two candidate responses, and the gold

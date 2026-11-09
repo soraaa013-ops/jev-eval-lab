@@ -1,0 +1,30 @@
+{
+  "ALL_NON_TIES": {
+    "samples": 1763,
+    "accuracy": 0.8247305728871243
+  },
+  "Factuality": {
+    "samples": 475,
+    "accuracy": 0.8042105263157895
+  },
+  "Focus": {
+    "samples": 495,
+    "accuracy": 0.9353535353535354
+  },
+  "Math": {
+    "samples": 183,
+    "accuracy": 0.726775956284153
+  },
+  "Precise IF": {
+    "samples": 160,
+    "accuracy": 0.50625
+  },
+  "Safety": {
+    "samples": 450,
+    "accuracy": 0.8777777777777778
+  },
+  "runtime": {
+    "total_cost": 0.160977474,
+    "mean_latency_ms": 446.5798695211315
+  }
+}

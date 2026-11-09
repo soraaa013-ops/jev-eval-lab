@@ -10,4 +10,6 @@ artifacts/runs/*
 !artifacts/runs/judgebench-jev-1.14/
 !artifacts/runs/judgebench-qwen3-30b-a3b-v2/
 !artifacts/runs/judgebench-gpt-5-mini/
+!artifacts/runs/rewardbench2-jev-rating/
+!artifacts/runs/rewardbench2-jev-ranking/
 
