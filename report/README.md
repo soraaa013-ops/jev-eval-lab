@@ -1,5 +1,10 @@
 # Reports
 
+一页汇报：[可编辑 PPT](jev-eval-lab-one-page.pptx) · [PDF 预览](jev-eval-lab-one-page.pdf)。
+覆盖研究定位、实验规模、核心结果、工程复现、应用建议与限制；补充口径见 PPT 演讲者备注。
+安装 `python-pptx` 后运行 `python scripts/build_one_page_ppt.py` 可重新生成；
+推荐字体为 Noto Sans CJK SC，PDF 由 LibreOffice 导出。
+
 本仓库提供两个互补版本：
 
 1. [研究报告版](report.md)：强调研究问题、实验协议、精确指标、限制和可复现性，

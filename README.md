@@ -12,6 +12,9 @@ results can be interpreted in the wider decision-model landscape.
 
 ## Results
 
+For a one-slide Chinese overview, download the [PowerPoint](report/jev-eval-lab-one-page.pptx)
+or view the [PDF preview](report/jev-eval-lab-one-page.pdf).
+
 Choose the [research report](report/report.md) for a concise research account or the
 [detailed experiment report](report/experiment-report.md) for a complete explanation of how every experiment was run.
 The [experiment-results index](artifacts/README.md) links every detail. The repository commits every
