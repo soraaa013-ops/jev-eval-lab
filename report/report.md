@@ -1,5 +1,9 @@
 # Jev 类型决策模型在评估场景中的应用研究
 
+> **最新主实验：** 请先读 [System One 如何评估 Agent](agent-judge-benchmark.md)。
+> 新增 BFCL / τ² 的 500 条真实轨迹、6,147 个步骤，Jev / Clef / GPT-5 mini 同证据对比。
+> 下文保留此前回答质量实验与诊断研究，按各自口径解读；不混为 agent 端到端收益。
+
 > 状态：v1.0。已完成 JudgeBench GPT-4o split 的多模型全量双顺序实验、
 > RewardBench 2 的 Jev 全量 ranking/rating 实验、bootstrap 统计、可靠性图和
 > 定性错误审计。示例 smoke-test 不作为模型证据。

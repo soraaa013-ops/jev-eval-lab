@@ -1,5 +1,9 @@
 # Experiment results index
 
+**New primary study:** [AgentProcessBench judge comparison](agentprocessbench/README.md):
+500 trajectories, 6,147 human step labels, Jev / Clef-flash / GPT-5 mini.
+These trajectory judgments are separate from the original answer-quality ledger.
+
 Additional study: [System One verification ledger](validation/system-one/README.md)
 contains source verification, external-result reanalysis and local synthetic probes.
 These are explicitly separate from the original benchmark ledger below.

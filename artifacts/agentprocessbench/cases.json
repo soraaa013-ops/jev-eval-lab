@@ -1,0 +1,106 @@
+{
+  "id": "bfcl:0:0",
+  "selection": "post-hoc explanatory example, not an independent test",
+  "question": "Hey, can you set up a new directory named 'Projects' right in workspace folder?\n\nLet's move over the project's proposal document into this 'Projects' folder, but we'll go ahead and rename it to 'final_proposal_2024'.\n\nInside this directory, get cracking on a new file, call it 'notes.md', to capture all the highlights from our meetings.\n\nAlso, create a file named 'summary.txt' and write 'Hello' into it. After that, do a quick comparison between this one and 'notes.md' to spot any disparities in information.\n\nFinally, tally up the number of characters in 'summary.txt'.",
+  "messages": {
+    "1": {
+      "role": "system",
+      "content": "<state_info class_name=\"GorillaFileSystem\">\n{\"long_context\": false, \"root\": \"<Directory: alex, Parent: None, Contents: {'workspace': <Directory: workspace, Parent: alex, Contents: {'proposal.docx': <<File: proposal.docx, Content: Initial project proposal document content.>>, 'notes.md': <<File: notes.md, Content: Meeting highlights and notes.>>}>}>\"}\n</state_info>"
+    },
+    "2": {
+      "role": "user",
+      "content": "Hey, can you set up a new directory named 'Projects' right in workspace folder?"
+    },
+    "3": {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_multi_turn_base_10_0_0_0",
+          "type": "function",
+          "function": {
+            "name": "pwd",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    "4": {
+      "role": "tool",
+      "content": "{\"current_working_directory\": \"/alex\"}",
+      "name": "pwd",
+      "tool_call_id": "call_multi_turn_base_10_0_0_0"
+    },
+    "5": {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_multi_turn_base_10_0_1_0",
+          "type": "function",
+          "function": {
+            "name": "mkdir",
+            "arguments": "{\"dir_name\": \"Projects\"}"
+          }
+        }
+      ]
+    },
+    "6": {
+      "role": "tool",
+      "content": "None",
+      "name": "mkdir",
+      "tool_call_id": "call_multi_turn_base_10_0_1_0"
+    },
+    "7": {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_multi_turn_base_10_0_2_0",
+          "type": "function",
+          "function": {
+            "name": "ls",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    "8": {
+      "role": "tool",
+      "content": "{\"current_directory_content\": [\"workspace\", \"Projects\"]}",
+      "name": "ls",
+      "tool_call_id": "call_multi_turn_base_10_0_2_0"
+    },
+    "9": {
+      "role": "assistant",
+      "content": "Great! The 'Projects' directory has been successfully created. You can now see it listed along with the 'workspace' directory in the current folder. You can start using this new directory for your projects."
+    }
+  },
+  "gold": {
+    "5": -1,
+    "9": -1
+  },
+  "judges": {
+    "jev": {
+      "step_labels": {
+        "5": -1,
+        "9": 1
+      },
+      "request_sha256": "1e54cc4d042bf0cfd691c61b1f499420d3204d9677dc434258e3f33cbea78d2e"
+    },
+    "clef": {
+      "step_labels": {
+        "5": 1,
+        "9": 1
+      },
+      "request_sha256": "7d3069156d1c76710afe8bcdae36937f99c22801a39d48167d16e37c4d107bbe"
+    },
+    "gpt5mini": {
+      "step_labels": {
+        "5": 1,
+        "9": 1
+      },
+      "request_sha256": "ba5580ea9812577134d7fb80bcef3e95c826674555faf59d5fb8ef8157e68dbb"
+    }
+  }
+}

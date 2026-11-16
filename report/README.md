@@ -1,7 +1,8 @@
 # Reports
 
 一页汇报：[可编辑 PPT](jev-eval-lab-one-page.pptx) · [PDF 预览](jev-eval-lab-one-page.pdf)。
-覆盖已有实验、System One 同类对照、通用 Agent 评估应用与发展路线；补充口径见 PPT 演讲者备注。
+当前主线：[System One 如何评估 Agent](agent-judge-benchmark.md)。先讲清机制，再比较三个评委在 500 条真实轨迹上的判定。
+旧回答质量实验和合成诊断保留为历史补充，避免混淆。
 配套阅读：[System One 模型验证与通用 Agent 评估](system-one-agent-evaluation.md)，
 包括固定实现核查、外部 2,100 个案例复算、本地小模型诊断、适用边界和研究路线。
 [验证证据与复现入口](../artifacts/validation/system-one/README.md) 区分本地推理、外部重算、作者报告与建议。

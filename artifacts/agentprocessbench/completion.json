@@ -1,0 +1,30 @@
+{
+  "finalized_at_utc": "2026-11-16T07:30:54.868329+00:00",
+  "planned_trajectory_judgments": 1500,
+  "complete_trajectory_judgments": 1497,
+  "terminal_failures": 3,
+  "primary_step_label_slots": 18441,
+  "missing_step_predictions": 264,
+  "checks": [
+    "11 unit tests passed",
+    "1500 unique logical requests and every HTTP chunk hash verified",
+    "independent CSV accuracy and macro-F1 recomputation",
+    "no credential in artifacts",
+    "resume Pending 0",
+    "one-slide PPT and one-page PDF visually inspected"
+  ],
+  "sha256": {
+    "scripts/run_agentprocessbench.py": "b95fd4f398359adfeac3e2ab2a2edb7d5da65560d7400acce5eaf7cd0ee0e0a9",
+    "scripts/analyze_agentprocessbench.py": "45f806b28305687c25d0fb9839c22f4e07adaeb0b37e509546f3fc7ae86716a2",
+    "scripts/prepare_agentprocessbench.py": "2dd644dbd4b4c1c35509d8583a8564507faa0b42363bc9c74f20329d6749906e",
+    "scripts/write_agentprocessbench_results.py": "3dfe8ea604fd0c3bed425ab3ba5b90812a1f554670b47a36189841841193c43d",
+    "scripts/build_one_page_ppt.py": "2e4e9f01d606aacc48e8daf3a2571ff1db19f5a7fe7a11002b501a7322075d69",
+    "data/agentprocessbench/bfcl.jsonl": "6aee0b71eff7feb872c6b54d962f8831b56f7bebf770cba9cb657f219afb6fe5",
+    "data/agentprocessbench/tau2.jsonl": "6f22818ff88822512767fe735f56e7b78bed4b9aaf26959144feb92f127e1e95",
+    "artifacts/agentprocessbench/results.jsonl": "23f5ada54c15c5a439ce78526cafe1fd320ef49f5343e2219d42ca818953c799",
+    "artifacts/agentprocessbench/metrics.json": "69faf9536174b0c2b1a9cfe0b4fad0de310126fb8e22a3ae5618b6717a1f8f85",
+    "artifacts/agentprocessbench/per-step.csv": "ead2826bbb9f717abf36c29fe47f3fc395935c631d88f5faa06f4439b710e74a",
+    "report/jev-eval-lab-one-page.pptx": "5ed976d0f879d5cf6b3b86cc1d4c568408bb6eedf5dada0ad7b73c4e5c243dd7",
+    "report/jev-eval-lab-one-page.pdf": "48d4bfa8c00365a9164946dd4d73f5fe60a78ad26db518922af44510602dece2"
+  }
+}

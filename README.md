@@ -2,13 +2,29 @@
 
 Jev Eval Lab is a provider-neutral, reproducible testbed for studying typed
 decision models—especially Jev—in model-evaluation settings. It compares typed
-judges, generative LLM judges, and deterministic baselines on the same pairwise
-tasks while preserving raw responses, resolved configuration, request hashes,
+judges, generative LLM judges, and deterministic baselines on pairwise tasks
+and human-annotated agent trajectories while preserving raw responses, resolved configuration, request hashes,
 latency, probabilities, and model versions.
 
 The research focus is evaluation, not a claim that Jev should replace an LLM.
 The report separately surveys existing Jev applications so that benchmark
 results can be interpreted in the wider decision-model landscape.
+
+## Start here: how a model judges an agent
+
+Read the [plain-language agent-judge report](report/agent-judge-benchmark.md).
+The new paired experiment uses **500 public BFCL / tau2 trajectories and 6,147
+human-labeled steps** from AgentProcessBench. Jev, Clef-flash, and GPT-5 mini judge
+the same execution evidence. This measures judge quality, not improved agent
+success. [Protocol and raw results](artifacts/agentprocessbench/README.md).
+
+The [one-page PPT](report/jev-eval-lab-one-page.pptx) and
+[PDF](report/jev-eval-lab-one-page.pdf) now summarize this agent experiment.
+Earlier answer-quality benchmarks and synthetic diagnostics remain below as
+separate historical studies; their counts are not mixed with agent trajectories.
+
+To reproduce, install `pip install -e '.[agent-eval]'`, then follow the report.
+Offline analysis uses the committed raw responses and needs no API key.
 
 ## Results
 
@@ -24,7 +40,7 @@ diagnostic runs. These are separate from the 6,428 benchmark judgments below.
 Choose the [research report](report/report.md) for a concise research account or the
 [detailed experiment report](report/experiment-report.md) for a complete explanation of how every experiment was run.
 The [experiment-results index](artifacts/README.md) links every detail. The repository commits every
-per-judgment result, not just aggregate scores. Current experiments contain
+per-judgment result, not just aggregate scores. The original answer-quality experiments contain
 6,428 committed judgments across hosted-API and local-model runs on JudgeBench
 and RewardBench 2.
 

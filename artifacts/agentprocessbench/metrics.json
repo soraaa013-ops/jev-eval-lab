@@ -1,0 +1,773 @@
+{
+  "dataset_revision": "cd81f326aece8b0a3f6359e20df370690d3a98bf",
+  "n_trajectories": 500,
+  "n_queries": 100,
+  "n_steps": 6147,
+  "gold_step_counts": {
+    "1": 4236,
+    "-1": 1680,
+    "0": 231
+  },
+  "gold_final_counts": {
+    "-1": 266,
+    "1": 214,
+    "0": 20
+  },
+  "models": {
+    "jev": {
+      "n_steps": 6147,
+      "accuracy": 0.7712705384740524,
+      "macro_f1": 0.5045015938195986,
+      "f1_by_label": {
+        "-1": 0.4898132427843803,
+        "0": 0.1414141414141414,
+        "1": 0.882277397260274
+      },
+      "error_recall": 0.34345238095238095,
+      "error_false_positive_rate": 0.02216252518468771,
+      "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+        [
+          577,
+          289,
+          814,
+          0
+        ],
+        [
+          17,
+          42,
+          172,
+          0
+        ],
+        [
+          82,
+          32,
+          4122,
+          0
+        ]
+      ],
+      "complete_trajectories": 500,
+      "requested_trajectories": 500,
+      "final_accuracy_all_500_exact_match": 0.73,
+      "final_accuracy": 0.7604166666666666,
+      "final_binary_gold_count": 480,
+      "final_neutral_gold_excluded": 20,
+      "final_failure_recall": 0.6954887218045113,
+      "cost_usd_reported": 0.34138582799999995,
+      "http_calls_recorded": 503,
+      "retries": 0,
+      "latency_seconds_p50": 0.5682665699278004,
+      "latency_seconds_p95": 0.72605623184354,
+      "model_versions": {
+        "typesafe/jev-1.14-20261014": 500
+      },
+      "probability_ge_0.9_steps": 3060,
+      "probability_ge_0.9_error_rate": 0.08366013071895428,
+      "subsets": {
+        "bfcl": {
+          "n_steps": 2590,
+          "accuracy": 0.7872586872586873,
+          "macro_f1": 0.47023834384048596,
+          "f1_by_label": {
+            "-1": 0.41612483745123535,
+            "0": 0.1111111111111111,
+            "1": 0.8834790829591114
+          },
+          "error_recall": 0.2807017543859649,
+          "error_false_positive_rate": 0.019306930693069307,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              160,
+              50,
+              360,
+              0
+            ],
+            [
+              8,
+              10,
+              86,
+              0
+            ],
+            [
+              31,
+              16,
+              1869,
+              0
+            ]
+          ]
+        },
+        "tau2": {
+          "n_steps": 3557,
+          "accuracy": 0.7596289007590666,
+          "macro_f1": 0.5204640749530403,
+          "f1_by_label": {
+            "-1": 0.5255198487712666,
+            "0": 0.15458937198067632,
+            "1": 0.8812830041071777
+          },
+          "error_recall": 0.37567567567567567,
+          "error_false_positive_rate": 0.024519820187985288,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              417,
+              239,
+              454,
+              0
+            ],
+            [
+              9,
+              32,
+              86,
+              0
+            ],
+            [
+              51,
+              16,
+              2253,
+              0
+            ]
+          ]
+        }
+      },
+      "accuracy_95ci": [
+        0.7350947716657741,
+        0.806599613050335
+      ],
+      "macro_f1_95ci": [
+        0.47595868200583064,
+        0.5324628044723398
+      ]
+    },
+    "clef": {
+      "n_steps": 6147,
+      "accuracy": 0.6614608752236864,
+      "macro_f1": 0.42451420960874336,
+      "f1_by_label": {
+        "-1": 0.27445255474452557,
+        "0": 0.18122977346278318,
+        "1": 0.8178603006189213
+      },
+      "error_recall": 0.16785714285714284,
+      "error_false_positive_rate": 0.020819341840161182,
+      "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+        [
+          282,
+          195,
+          988,
+          215
+        ],
+        [
+          9,
+          84,
+          124,
+          14
+        ],
+        [
+          84,
+          417,
+          3700,
+          35
+        ]
+      ],
+      "complete_trajectories": 497,
+      "requested_trajectories": 500,
+      "final_accuracy_all_500_exact_match": 0.566,
+      "final_accuracy": 0.5895833333333333,
+      "final_binary_gold_count": 480,
+      "final_neutral_gold_excluded": 20,
+      "final_failure_recall": 0.36466165413533835,
+      "cost_usd_reported": 0.17640462600000018,
+      "http_calls_recorded": 518,
+      "retries": 13,
+      "latency_seconds_p50": 1.1168754889513366,
+      "latency_seconds_p95": 1.9890577413374553,
+      "model_versions": {
+        "cloudflare/clef-flash": 497
+      },
+      "probability_ge_0.9_steps": 1969,
+      "probability_ge_0.9_error_rate": 0.14372778059928903,
+      "subsets": {
+        "bfcl": {
+          "n_steps": 2590,
+          "accuracy": 0.6965250965250965,
+          "macro_f1": 0.4044769546399778,
+          "f1_by_label": {
+            "-1": 0.17893217893217894,
+            "0": 0.2096317280453258,
+            "1": 0.8248669569424286
+          },
+          "error_recall": 0.10877192982456141,
+          "error_false_positive_rate": 0.030198019801980197,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              62,
+              58,
+              450,
+              0
+            ],
+            [
+              4,
+              37,
+              63,
+              0
+            ],
+            [
+              57,
+              154,
+              1705,
+              0
+            ]
+          ]
+        },
+        "tau2": {
+          "n_steps": 3557,
+          "accuracy": 0.6359291537812763,
+          "macro_f1": 0.43292773667760237,
+          "f1_by_label": {
+            "-1": 0.32305433186490456,
+            "0": 0.16376306620209058,
+            "1": 0.811965811965812
+          },
+          "error_recall": 0.1981981981981982,
+          "error_false_positive_rate": 0.013077237433592154,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              220,
+              137,
+              538,
+              215
+            ],
+            [
+              5,
+              47,
+              61,
+              14
+            ],
+            [
+              27,
+              263,
+              1995,
+              35
+            ]
+          ]
+        }
+      },
+      "accuracy_95ci": [
+        0.6191733287964977,
+        0.7047409266675936
+      ],
+      "macro_f1_95ci": [
+        0.39891001769655987,
+        0.4499404212540549
+      ]
+    },
+    "gpt5mini": {
+      "n_steps": 6147,
+      "accuracy": 0.7122173417927444,
+      "macro_f1": 0.37574222650158545,
+      "f1_by_label": {
+        "-1": 0.23002544529262087,
+        "0": 0.04794520547945205,
+        "1": 0.8492560287326835
+      },
+      "error_recall": 0.13452380952380952,
+      "error_false_positive_rate": 0.013207969554510857,
+      "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+        [
+          226,
+          291,
+          1163,
+          0
+        ],
+        [
+          9,
+          14,
+          208,
+          0
+        ],
+        [
+          50,
+          48,
+          4138,
+          0
+        ]
+      ],
+      "complete_trajectories": 500,
+      "requested_trajectories": 500,
+      "final_accuracy_all_500_exact_match": 0.616,
+      "final_accuracy": 0.6416666666666667,
+      "final_binary_gold_count": 480,
+      "final_neutral_gold_excluded": 20,
+      "final_failure_recall": 0.38345864661654133,
+      "cost_usd_reported": 2.301369300000001,
+      "http_calls_recorded": 509,
+      "retries": 9,
+      "latency_seconds_p50": 8.92878086748533,
+      "latency_seconds_p95": 17.476212246046625,
+      "model_versions": {
+        "openai/gpt-5-mini": 500
+      },
+      "probability_ge_0.9_steps": 0,
+      "probability_ge_0.9_error_rate": null,
+      "subsets": {
+        "bfcl": {
+          "n_steps": 2590,
+          "accuracy": 0.7594594594594595,
+          "macro_f1": 0.40332222439014515,
+          "f1_by_label": {
+            "-1": 0.27906976744186046,
+            "0": 0.06486486486486487,
+            "1": 0.8660320408637102
+          },
+          "error_recall": 0.16842105263157894,
+          "error_false_positive_rate": 0.01089108910891089,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              96,
+              43,
+              431,
+              0
+            ],
+            [
+              3,
+              6,
+              95,
+              0
+            ],
+            [
+              19,
+              32,
+              1865,
+              0
+            ]
+          ]
+        },
+        "tau2": {
+          "n_steps": 3557,
+          "accuracy": 0.6778183862805736,
+          "macro_f1": 0.35989051651821363,
+          "f1_by_label": {
+            "-1": 0.20360219263899765,
+            "0": 0.040100250626566414,
+            "1": 0.8359691062890768
+          },
+          "error_recall": 0.11711711711711711,
+          "error_false_positive_rate": 0.015120555782590927,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              130,
+              248,
+              732,
+              0
+            ],
+            [
+              6,
+              8,
+              113,
+              0
+            ],
+            [
+              31,
+              16,
+              2273,
+              0
+            ]
+          ]
+        }
+      },
+      "accuracy_95ci": [
+        0.6650528246851575,
+        0.7619564636091744
+      ],
+      "macro_f1_95ci": [
+        0.35004450280456534,
+        0.40503686388755855
+      ]
+    },
+    "always_positive": {
+      "n_steps": 6147,
+      "accuracy": 0.6891166422645193,
+      "macro_f1": 0.27198304921506306,
+      "f1_by_label": {
+        "-1": 0.0,
+        "0": 0.0,
+        "1": 0.8159491476451892
+      },
+      "error_recall": 0.0,
+      "error_false_positive_rate": 0.0,
+      "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+        [
+          0,
+          0,
+          1680,
+          0
+        ],
+        [
+          0,
+          0,
+          231,
+          0
+        ],
+        [
+          0,
+          0,
+          4236,
+          0
+        ]
+      ],
+      "complete_trajectories": 500,
+      "requested_trajectories": 500,
+      "final_accuracy_all_500_exact_match": 0.428,
+      "final_accuracy": 0.44583333333333336,
+      "final_binary_gold_count": 480,
+      "final_neutral_gold_excluded": 20,
+      "final_failure_recall": 0.0,
+      "cost_usd_reported": 0,
+      "http_calls_recorded": 0,
+      "retries": 0,
+      "latency_seconds_p50": null,
+      "latency_seconds_p95": null,
+      "model_versions": {},
+      "probability_ge_0.9_steps": 0,
+      "probability_ge_0.9_error_rate": null,
+      "subsets": {
+        "bfcl": {
+          "n_steps": 2590,
+          "accuracy": 0.7397683397683398,
+          "macro_f1": 0.2834738866696257,
+          "f1_by_label": {
+            "-1": 0.0,
+            "0": 0.0,
+            "1": 0.8504216600088771
+          },
+          "error_recall": 0.0,
+          "error_false_positive_rate": 0.0,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              0,
+              0,
+              570,
+              0
+            ],
+            [
+              0,
+              0,
+              104,
+              0
+            ],
+            [
+              0,
+              0,
+              1916,
+              0
+            ]
+          ]
+        },
+        "tau2": {
+          "n_steps": 3557,
+          "accuracy": 0.6522350295192578,
+          "macro_f1": 0.2631728206000794,
+          "f1_by_label": {
+            "-1": 0.0,
+            "0": 0.0,
+            "1": 0.7895184618002382
+          },
+          "error_recall": 0.0,
+          "error_false_positive_rate": 0.0,
+          "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+            [
+              0,
+              0,
+              1110,
+              0
+            ],
+            [
+              0,
+              0,
+              127,
+              0
+            ],
+            [
+              0,
+              0,
+              2320,
+              0
+            ]
+          ]
+        }
+      },
+      "accuracy_95ci": [
+        0.6394417261875537,
+        0.7406850806787971
+      ],
+      "macro_f1_95ci": [
+        0.2600241760724053,
+        0.2836756971528699
+      ]
+    }
+  },
+  "common_complete_trajectories": 497,
+  "common_complete_metrics": {
+    "jev": {
+      "n_steps": 5883,
+      "accuracy": 0.7786843447220806,
+      "macro_f1": 0.4919767190545308,
+      "f1_by_label": {
+        "-1": 0.45225136071251854,
+        "0": 0.13861386138613863,
+        "1": 0.8850649350649351
+      },
+      "error_recall": 0.3119453924914676,
+      "error_false_positive_rate": 0.02240832956088728,
+      "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+        [
+          457,
+          223,
+          785,
+          0
+        ],
+        [
+          17,
+          35,
+          165,
+          0
+        ],
+        [
+          82,
+          30,
+          4089,
+          0
+        ]
+      ]
+    },
+    "clef": {
+      "n_steps": 5883,
+      "accuracy": 0.6911439741628421,
+      "macro_f1": 0.43718892745999977,
+      "f1_by_label": {
+        "-1": 0.3065217391304348,
+        "0": 0.18400876232201532,
+        "1": 0.8210362809275491
+      },
+      "error_recall": 0.1924914675767918,
+      "error_false_positive_rate": 0.021050248981439566,
+      "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+        [
+          282,
+          195,
+          988,
+          0
+        ],
+        [
+          9,
+          84,
+          124,
+          0
+        ],
+        [
+          84,
+          417,
+          3700,
+          0
+        ]
+      ]
+    },
+    "gpt5mini": {
+      "n_steps": 5883,
+      "accuracy": 0.7383987761346252,
+      "macro_f1": 0.3923264404119487,
+      "f1_by_label": {
+        "-1": 0.2584333905088622,
+        "0": 0.056451612903225805,
+        "1": 0.862094317823758
+      },
+      "error_recall": 0.15426621160409557,
+      "error_false_positive_rate": 0.013128112267994568,
+      "confusion_gold_rows_pred_columns_-1_0_1_missing": [
+        [
+          226,
+          217,
+          1022,
+          0
+        ],
+        [
+          9,
+          14,
+          194,
+          0
+        ],
+        [
+          49,
+          48,
+          4104,
+          0
+        ]
+      ]
+    }
+  },
+  "paired_differences": {
+    "jev minus gpt5mini": {
+      "accuracy": {
+        "difference": 0.05905319668130793,
+        "paired_query_bootstrap_95ci": [
+          0.03505822971078928,
+          0.08622373850538566
+        ]
+      },
+      "macro_f1": {
+        "difference": 0.12875936731801313,
+        "paired_query_bootstrap_95ci": [
+          0.09104833835622571,
+          0.16410346369857137
+        ]
+      }
+    },
+    "clef minus gpt5mini": {
+      "accuracy": {
+        "difference": -0.05075646656905808,
+        "paired_query_bootstrap_95ci": [
+          -0.06790261544605965,
+          -0.033861070374286636
+        ]
+      },
+      "macro_f1": {
+        "difference": 0.04877198310715791,
+        "paired_query_bootstrap_95ci": [
+          0.016073207499148378,
+          0.07753520648401317
+        ]
+      }
+    },
+    "jev minus clef": {
+      "accuracy": {
+        "difference": 0.10980966325036601,
+        "paired_query_bootstrap_95ci": [
+          0.08544731535696039,
+          0.14089557857450843
+        ]
+      },
+      "macro_f1": {
+        "difference": 0.07998738421085522,
+        "paired_query_bootstrap_95ci": [
+          0.048245906987924164,
+          0.1127387021709523
+        ]
+      }
+    }
+  },
+  "bootstrap": {
+    "unit": "dataset/query_index (five trajectories per query)",
+    "seed": 20261116,
+    "draws": 2000
+  },
+  "main_run_errors": [
+    {
+      "id": "tau2:0:0",
+      "model": "clef",
+      "errors": [
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions"
+      ]
+    },
+    {
+      "id": "tau2:0:0",
+      "model": "gpt5mini",
+      "errors": [
+        "missing/extra step indices"
+      ]
+    },
+    {
+      "id": "tau2:28:4",
+      "model": "gpt5mini",
+      "errors": [
+        "missing/extra step indices"
+      ]
+    },
+    {
+      "id": "tau2:36:4",
+      "model": "clef",
+      "errors": [
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions"
+      ]
+    },
+    {
+      "id": "tau2:35:4",
+      "model": "clef",
+      "errors": [
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions"
+      ]
+    },
+    {
+      "id": "tau2:41:4",
+      "model": "clef",
+      "errors": [
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions"
+      ]
+    },
+    {
+      "id": "tau2:42:4",
+      "model": "clef",
+      "errors": [
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions"
+      ]
+    },
+    {
+      "id": "tau2:44:4",
+      "model": "clef",
+      "errors": [
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions"
+      ]
+    },
+    {
+      "id": "tau2:35:4",
+      "model": "gpt5mini",
+      "errors": [
+        "missing/extra step indices",
+        "missing/extra step indices"
+      ]
+    },
+    {
+      "id": "tau2:41:4",
+      "model": "gpt5mini",
+      "errors": [
+        "missing/extra step indices"
+      ]
+    },
+    {
+      "id": "tau2:45:0",
+      "model": "gpt5mini",
+      "errors": [
+        "missing/extra step indices"
+      ]
+    },
+    {
+      "id": "tau2:48:4",
+      "model": "clef",
+      "errors": [
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions",
+        "422 Client Error: Unprocessable Entity for url: https://openrouter.ai/api/alpha/decisions"
+      ]
+    },
+    {
+      "id": "tau2:49:4",
+      "model": "gpt5mini",
+      "errors": [
+        "missing/extra step indices"
+      ]
+    },
+    {
+      "id": "tau2:48:4",
+      "model": "gpt5mini",
+      "errors": [
+        "missing/extra step indices",
+        "missing/extra step indices"
+      ]
+    }
+  ]
+}

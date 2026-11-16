@@ -1,0 +1,20 @@
+{
+  "revision": "cd81f326aece8b0a3f6359e20df370690d3a98bf",
+  "dataset_card_license": "mit",
+  "sources": [
+    {
+      "subset": "bfcl",
+      "url": "https://huggingface.co/datasets/LulaCola/AgentProcessBench/resolve/cd81f326aece8b0a3f6359e20df370690d3a98bf/bfcl/test.jsonl",
+      "sha256": "6aee0b71eff7feb872c6b54d962f8831b56f7bebf770cba9cb657f219afb6fe5",
+      "bytes": 15010475,
+      "trajectories": 250
+    },
+    {
+      "subset": "tau2",
+      "url": "https://huggingface.co/datasets/LulaCola/AgentProcessBench/resolve/cd81f326aece8b0a3f6359e20df370690d3a98bf/tau2/test.jsonl",
+      "sha256": "6f22818ff88822512767fe735f56e7b78bed4b9aaf26959144feb92f127e1e95",
+      "bytes": 9960563,
+      "trajectories": 250
+    }
+  ]
+}

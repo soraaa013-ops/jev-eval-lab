@@ -1,5 +1,9 @@
 # Jev 评估实验详解：数据、协议、请求、指标与结果
 
+> **最新主实验：** 请先读 [System One 如何评估 Agent](agent-judge-benchmark.md)。
+> 新增 BFCL / τ² 的 500 条真实轨迹、6,147 个步骤，Jev / Clef / GPT-5 mini 同证据对比。
+> 下文保留此前回答质量实验与诊断研究，按各自口径解读；不混为 agent 端到端收益。
+
 2026-11-16 新增：[System One 模型验证与 Agent 评估研究](system-one-agent-evaluation.md)，
 包含实现核查、外部原始结果复算、本地小模型诊断及复现入口。下文原有 benchmark 数字保持不变；
 新增验证不混入 6,428 条正式实验记录，也不作为 agent 端到端成功率证据。
