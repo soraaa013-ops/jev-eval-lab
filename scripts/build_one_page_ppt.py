@@ -1,7 +1,7 @@
 """Build the one-slide Chinese project overview (requires python-pptx).
 
 Run from any directory: python scripts/build_one_page_ppt.py
-All quantitative inputs are committed experiment metrics; no API calls are made.
+Summarizes committed experiment metrics and cited external research; no API calls.
 """
 from pathlib import Path
 import json
@@ -60,90 +60,89 @@ def section(x, y, w, title, subtitle):
     text(x, y + .5, w, .68, subtitle, 18, MUTED)
 
 
-box(0, 0, 20, 1.47, NAVY)
-text(.55, .22, 15, .6, "Jev Eval Lab｜类型决策模型评估研究", 32, "FFFFFF", True)
-text(.57, .93, 18.8, .35,
-     "研究定位：比较类型化 judge、生成式 LLM 与开放奖励模型，衡量准确率、校准、稳定性、延迟与成本。", 19, "D6E5EE")
-box(.5, 1.7, 19, .82, "DDEFF0")
-text(.75, 1.87, 18.5, .48,
-     "核心结论  Jev 准确率低于 GPT-5 mini，但费用约为其 1/42、p50 延迟约为其 1/32；可探索“先筛选、再升级”。", 23, TEAL, True)
+# The slide separates measured results, external model descriptions, and a proposed roadmap.
+box(0, 0, 20, 1.36, NAVY)
+text(.55, .19, 19, .6, "Jev Eval Lab｜从模型评测走向 Agent 评估体系", 32, "FFFFFF", True)
+text(.57, .91, 19, .3, "研究问题：同类模型如何选？如何用低成本过程信号，改善可验证的任务质量与评估效率？", 19, "D6E5EE")
+box(.5, 1.56, 19, .72, "DDEFF0")
+text(.75, 1.73, 18.5, .4, "核心判断  System One 可承担高频、原子的语义检查；是否改善 agent，必须用独立真值与端到端实验验证。", 22, TEAL, True)
+text(.57, 2.48, 18.9, .58,
+     "已有实测：6,428 条判断；JudgeBench Jev 78.14% vs GPT-5 mini 85.71%，费用约 1/42、p50 约 1/32。\nRB2：四选一 82.47% / rating top-1 77.91%（协议及样本范围不同）；均为回答评估，尚无 agent 成功率提升证据。", 18, MUTED)
 
-box(.5, 2.75, 11.7, 5.06, "FFFFFF")
-box(12.43, 2.75, 7.07, 5.06, "FFFFFF")
-section(.75, 2.98, 11.2, "01  JudgeBench：四模型统一比较",
-        "350 对客观正确性样本 × A/B 双顺序 × 4 模型＝2,800 条判断\n来源：MMLU-Pro 154 对、LiveBench 154 对、LiveCodeBench 42 对。")
-
-cols = [3.04, 1.43, 1.48, 1.43, 1.27, 2.05]
-heads = ["模型", "逐次准确率", "双顺序全对", "顺序一致率", "p50 延迟", "总费用 / 700 条"]
-runs = [
-    ("GPT-5 mini", "judgebench-gpt-5-mini"),
-    ("Jev 1.14", "judgebench-jev-1.14"),
-    ("Qwen3-30B-A3B", "judgebench-qwen3-30b-a3b-v2"),
-    ("Skywork RM 0.6B*", "judgebench-skywork-rm-0.6b-256"),
+box(.5, 3.27, 9.35, 4.65, "FFFFFF")
+box(10.08, 3.27, 9.42, 4.65, "FFFFFF")
+text(.75, 3.47, 8.9, .4, "01  同类对照：比较路线，而非拼榜单", 23, NAVY, True)
+text(.75, 4.0, 8.85, .3, "以下为外部模型资料；除 Jev 外，均未在本仓库实测。", 16, MUTED)
+rows = [
+    ("模型", "主要差异", "评估候选与边界"),
+    ("Jev", "托管类型决策 API", "快速基线；需验证域内校准"),
+    ("Laya", "开放小型编码器", "短证据 / 可微调；注意截断"),
+    ("Kev", "开放 Qwen 决策模型", "自托管 / 可训练；计入算力成本"),
+    ("Clef / Flash", "开放 27B / 9B · 64K", "长证据 / 多问题；收益待实测"),
+    ("Decision 3.0", "开放多模态决策家族", "GUI 状态检查；须环境验证"),
 ]
-metrics = []
-rows = [heads]
-for label, run in runs:
-    m = json.loads((ROOT / "artifacts/runs" / run / "metrics.json").read_text())
-    metrics.append(m)
-    cost = f"${m['reported_total_cost']:.4f}" if not label.startswith("Skywork") else "$0 API 费*"
-    rows.append([label, *(f"{m[k]:.2%}" for k in ("accuracy", "strict_swap_accuracy", "swap_consistency")),
-                 f"{m['latency_ms_p50']/1000:.3f} s" if label == "Jev 1.14" else f"{m['latency_ms_p50']/1000:.2f} s", cost])
+widths = [1.7, 3.12, 4.02]
 for i, row in enumerate(rows):
-    yy = 4.25 + i * .48
-    box(.75, yy, 10.7, .48, NAVY if i == 0 else ("DDEFF0" if i == 2 else ("F0F4F7" if i % 2 == 0 else "FFFFFF")))
+    yy = 4.47 + i * .42
+    box(.75, yy, 8.84, .42, NAVY if i == 0 else ("EEF4F6" if i % 2 == 0 else "FFFFFF"))
     xx = .75
-    for j, value in enumerate(row):
-        text(xx + .08, yy + .1, cols[j] - .1, .32, value, 15.5 if i == 0 else 17,
-             "FFFFFF" if i == 0 else INK, i in (0, 2))
-        xx += cols[j]
-text(.78, 6.8, 10.95, .76,
-     "统计：按题聚类 bootstrap 10,000 次；Jev 对 GPT-5 mini 准确率差\n−7.57 个百分点（95% CI：−11.71～−3.43）；Jev 的 ECE 最低，为 0.041。", 18)
-text(.78, 7.46, 11, .27, "* Skywork：CPU、256-token 左截断；计算成本另计；同分数派生交换结果，一致率由机制保证。", 14, MUTED)
+    for j, val in enumerate(row):
+        text(xx + .07, yy + .085, widths[j] - .12, .3, val, 16,
+             "FFFFFF" if i == 0 else INK, i == 0)
+        xx += widths[j]
+text(.76, 7.12, 8.82, .62,
+     "外部配对研究：Jev 在 11 类 agent 决策点中 9 类领先 Laya；\n但两者零样本模型路由均未超过随机水平，不能泛化为全能评委。[1]", 16, TEAL)
 
-section(12.68, 2.98, 6.58, "02  RewardBench 2：Jev 协议对照",
-        "1,865 条独立评分＋1,763 条非 Ties 四选一\n覆盖事实、聚焦、数学、精确指令、安全、并列。")
-text(12.7, 4.27, 3.1, .55, "82.47%", 34, TEAL, True)
-text(16.03, 4.27, 3.1, .55, "77.91%", 34, NAVY, True)
-text(12.72, 4.94, 3.05, .32, "四选一准确率（非 Ties）", 17, MUTED)
-text(16.05, 4.94, 3.05, .32, "独立评分 top-1（全量）", 17, MUTED)
-text(12.7, 5.55, 6.5, 1.3,
-     "严格排序 77.75%；派生 pairwise 93.12%。\n安全：四选一 87.78% → 评分 66.44%。\n精确指令最弱：50.63% / 55.63%。", 19)
-text(12.7, 6.94, 6.5, .64,
-     "Ties：97.91%（官方公式＋自定义五档分数）。\n以上均为自定义适配，不能作为官方榜单成绩。", 17, TEAL, True)
+text(10.33, 3.47, 8.9, .4, "02  对 Agent 评估：过程信号＋分层复核", 23, NAVY, True)
+text(10.33, 4.02, 8.9, .65,
+     "离线评委：标注轨迹、定位失败、回归筛查、分配人工审核。\n在线控制：重试 / 停止 / 升级，会改变行为，必须重跑任务。", 18)
+for yy, title, detail in [
+    (4.94, "A  规则 / 环境真值", "检查测试、文件、状态变化与硬约束；保存证据。"),
+    (5.7, "B  System One 检查", "工具是否适用？返回是否支持结论？是否虚假报成功？"),
+    (6.46, "C  强模型 / 人工复核", "处理证据不足、复杂推理与重要分歧；允许弃判。"),
+]:
+    box(10.33, yy, 2.78, .54, "DDEFF0")
+    text(10.47, yy + .12, 2.55, .3, title, 17, TEAL, True)
+    text(13.3, yy + .1, 5.9, .45, detail, 17)
+text(10.34, 7.27, 8.85, .4,
+     "看真实执行证据，不凭 agent 自述；单步分数 ≠ 最终任务成功率。", 18, TEAL, True)
 
-box(.5, 8.04, 6.18, 2.49, "FFFFFF")
-box(6.91, 8.04, 6.18, 2.49, "FFFFFF")
-box(13.32, 8.04, 6.18, 2.49, "FFFFFF")
-text(.75, 8.23, 5.7, .4, "03  工程交付与复现", 23, NAVY, True)
-text(.75, 8.8, 5.68, 1.52,
-     "6 个完整 run，6,428 条结果已入库。\nDecisions / Chat / 本地模型＋离线 mock；\nTOML 配置、断点续跑、哈希与原始响应；\n离线重算指标、置信区间、可靠性与错误审计。", 18)
-text(7.16, 8.23, 5.7, .4, "04  应用价值与决策建议", 23, NAVY, True)
-text(7.16, 8.8, 5.68, 1.52,
-     "应用图谱：评委、RAG、路由、Agent 监督、\n审核、数据筛选、语义质量检查。\n本次验证评估场景；先做内部盲测与阈值校准，\n低置信升级强模型/人工，再评估后训练价值。", 18)
-text(13.57, 8.23, 5.7, .4, "05  结论边界与后续研究", 23, NAVY, True)
-text(13.57, 8.8, 5.68, 1.52,
-     "合法输出不等于判断正确；校准不可跨域外推。\nRB2 仅测 Jev；Ties 高分待审计；API 会漂移。\n未测：原子 rubric、改写/长度/注入、中英对照、\n参考答案消融与版本漂移；需独立新实验。", 18)
-
-text(.55, 10.78, 18.8, .25,
-     "来源：report/report.md · report/experiment-report.md · artifacts/（指标与逐条证据）  |  实验 2026-11-09 · 研究 v1.0 / 2026-11-10  |  1 / 1", 13, MUTED)
+text(.55, 8.17, 19, .4, "03  发展路线：先评估评委，再评估整套系统；数据稳定后才考虑后训练", 23, NAVY, True)
+phases = [
+    ("①  建真值与轨迹集", "定义成功条件与原子 rubric；\n环境验证＋人工仲裁。\n按任务族分训练 / 校准 / 测试。"),
+    ("②  同协议比较评委", "规则 / 强 LLM / Jev / 开放模型；\n测漏检、误报、校准、风险覆盖；\n扰动顺序、长度、语言与注入。"),
+    ("③  影子运行 → 闭环消融", "先只打标，再比较是否干预。\n看成功率、违规率、过早停止；\n算每次成功总费用与端到端 p95。"),
+    ("④  校准与专用训练", "阈值只在独立校准集选择；\n累积真实错误和分歧再微调。\n保留锁定盲测、漂移监控与回归。"),
+]
+for i, (title, body) in enumerate(phases):
+    xx = .5 + i * 4.8
+    box(xx, 8.79, 4.6, 1.76, "FFFFFF")
+    text(xx + .19, 8.97, 4.25, .35, title, 20, NAVY, True)
+    text(xx + .19, 9.46, 4.25, .94, body, 17)
+text(.55, 10.78, 19, .25,
+     "来源：本仓库 report/ 与 artifacts/；同类模型官方资料；[1] arXiv:2610.02267（外部研究，限定其版本与任务）。详见备注与配套报告。  |  2026-11-16 · 1 / 1", 12, MUTED)
 slide.notes_slide.notes_text_frame.text = (
-    "单页摘要，全部结果来自仓库固定实验，并非当前模型能力或价格承诺。\n"
-    "报告：report/report.md；详细过程：report/experiment-report.md；证据索引：artifacts/README.md。\n"
-    "严格双顺序要求同一道题两个方向都正确。Skywork 700 条为350对独立评分后派生的两个方向，非700次API请求。\n"
-    "JudgeBench Jev准确率95% CI为74.29%–81.86%；相对Qwen +13.86pp [10.00,17.71]；"
-    "相对Skywork +17.86pp [12.00,23.71]。\n"
-    "RewardBench 2四选一费用$0.16098、平均446.6ms；rating费用$0.19796、平均475.2ms。"
-    "六子集自定义宏平均80.49%不能与82.47%非Ties微平均混淆；不同协议不能直接作优劣比较。\n"
-    "错误机制包括知识辨别、重新执行复杂推理与位置敏感性。Jev 153次错误中18次置信度≥0.8；"
-    "GPT-5 mini为100/78；Qwen为250/196。\n"
-    "Risk–coverage仅为描述：Jev置信度≥0.96覆盖12.14%、risk约2.35%；≥0.76覆盖50.29%、risk约7.95%。"
-    "不能在测试集上选择业务阈值。\n"
-    "已提交响应可离线复算；托管API无法保证逐比特重跑。数据许可与哈希见docs/dataset-provenance.md。\n"
-    "复现：python scripts/build_one_page_ppt.py（依赖python-pptx；推荐安装Noto Sans CJK SC）。"
+    "通用 Agent 评估方向；没有假设某个具体项目。\n"
+    "证据分层：本仓库已有实测；外部论文/作者资料；尚未执行的发展建议。其他决策模型尚未在本仓库运行。\n"
+    "配套说明与完整引用：report/system-one-agent-evaluation.md。原报告：report/report.md、report/experiment-report.md。\n"
+    "JudgeBench为350对双顺序，4模型共2800条；RB2 rating1865条、ranking1763条，共6428。\n"
+    "JudgeBench逐次/严格双顺序/顺序一致：GPT-5 mini 85.71/80.57/89.71；Jev 78.14/70.57/84.86；"
+    "Qwen 64.29/40.00/51.43；Skywork 60.29/60.29/100。Skywork为CPU 256-token左截断、同分数派生交换。\n"
+    "Jev ECE0.041；对GPT-5 mini准确率差-7.57pp，95%CI[-11.71,-3.43]；按题10000次bootstrap。\n"
+    "RB2四选一仅非Ties；rating为全量，严格排序77.75%，派生pairwise93.12%。本项目自定义适配，非官方榜单。\n"
+    "工程：Decisions/Chat/本地模型/mock；TOML、断点续跑、版本/数据/请求哈希、原始响应、离线重算与错误审计。\n"
+    "外部资料核查于2026-11-16；模型版本不同，不拼接异构benchmark排名：\n"
+    "Laya：https://huggingface.co/convaiinnovations/laya\n"
+    "Kev：https://github.com/jaredpalmer/kev\n"
+    "Clef：https://developers.cloudflare.com/changelog/post/2026-10-01-clef-workers-ai/\n"
+    "d3：https://huggingface.co/vllm-sr/d3\n"
+    "[1] https://arxiv.org/abs/2610.02267 （Jev/Laya配对研究，非本仓库实测；该版本不能代表后续模型）\n"
+    "控制基线还应包括开放LLM直接读取选项logits，以及简单决策头微调：https://arxiv.org/abs/2610.17205\n"
+    "实施：先轨迹契约与独立真值，再评委验证、影子运行、闭环实验，最后考虑训练。计入证据提取、重试、升级与人工成本。\n"
+    "风险覆盖、路由阈值须独立校准。不能以旧轨迹离线判断证明新控制策略能改善真实任务。"
 )
-prs.core_properties.title = "Jev Eval Lab｜一页研究总结"
-prs.core_properties.subject = "研究设计、模型结果、工程复现、应用与限制"
+prs.core_properties.title = "Jev Eval Lab｜System One 对照与通用 Agent 评估路线"
+prs.core_properties.subject = "已有实测、同类模型、过程评估与闭环验证"
 prs.core_properties.author = "Jev Eval Lab"
 OUT.parent.mkdir(parents=True, exist_ok=True)
 prs.save(OUT)

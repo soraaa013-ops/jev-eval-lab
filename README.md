@@ -14,6 +14,9 @@ results can be interpreted in the wider decision-model landscape.
 
 For a one-slide Chinese overview, download the [PowerPoint](report/jev-eval-lab-one-page.pptx)
 or view the [PDF preview](report/jev-eval-lab-one-page.pdf).
+The [System One and agent-evaluation roadmap](report/system-one-agent-evaluation.md)
+compares related decision models and proposes a general agent evaluation workflow,
+separating repository measurements, external evidence, and future experiments.
 
 Choose the [research report](report/report.md) for a concise research account or the
 [detailed experiment report](report/experiment-report.md) for a complete explanation of how every experiment was run.
