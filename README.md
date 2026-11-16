@@ -17,6 +17,9 @@ or view the [PDF preview](report/jev-eval-lab-one-page.pdf).
 The [System One and agent-evaluation roadmap](report/system-one-agent-evaluation.md)
 compares related decision models and proposes a general agent evaluation workflow,
 separating repository measurements, external evidence, and future experiments.
+The [verification ledger](artifacts/validation/system-one/README.md) records pinned
+model artifacts, a reanalysis of 2,100 external paired cases, and local synthetic
+diagnostic runs. These are separate from the 6,428 benchmark judgments below.
 
 Choose the [research report](report/report.md) for a concise research account or the
 [detailed experiment report](report/experiment-report.md) for a complete explanation of how every experiment was run.

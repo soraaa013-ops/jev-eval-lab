@@ -1,5 +1,9 @@
 # Experiment results index
 
+Additional study: [System One verification ledger](validation/system-one/README.md)
+contains source verification, external-result reanalysis and local synthetic probes.
+These are explicitly separate from the original benchmark ledger below.
+
 This directory contains the committed, per-judgment results. None of the numbers
 below are reconstructed from screenshots: every aggregate can be recomputed from
 the JSONL files linked here.

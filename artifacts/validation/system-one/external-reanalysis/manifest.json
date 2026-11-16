@@ -1,0 +1,41 @@
+{
+  "evidence_type": "our_reanalysis_of_external_inference",
+  "upstream_repository": "https://github.com/David-DL-Space/sys1-eval",
+  "upstream_revision": "e74dfb6d99ed041f5f5240af386ba5272de84cdd",
+  "sources": [
+    {
+      "path": "bench/cases-large.jsonl",
+      "url": "https://raw.githubusercontent.com/David-DL-Space/sys1-eval/e74dfb6d99ed041f5f5240af386ba5272de84cdd/bench/cases-large.jsonl",
+      "sha256": "92d7466db1248182bddd0f497e8a6af533e14bf6fd80a25c3dc83960fb2f837d",
+      "bytes": 4144715
+    },
+    {
+      "path": "results/jev-all.jsonl",
+      "url": "https://raw.githubusercontent.com/David-DL-Space/sys1-eval/e74dfb6d99ed041f5f5240af386ba5272de84cdd/results/jev-all.jsonl",
+      "sha256": "2bc7f8b57d855796d7eb597cf2dbc5740609bb87627bc54744384a8b204c38b7",
+      "bytes": 1795715
+    },
+    {
+      "path": "results/jev-c-fixed.jsonl",
+      "url": "https://raw.githubusercontent.com/David-DL-Space/sys1-eval/e74dfb6d99ed041f5f5240af386ba5272de84cdd/results/jev-c-fixed.jsonl",
+      "sha256": "efe6b208473bde46b31afc0e22fbe1afb5d20ffcac44064077a57fbb6b33d00e",
+      "bytes": 85862
+    },
+    {
+      "path": "results/laya-all.jsonl",
+      "url": "https://raw.githubusercontent.com/David-DL-Space/sys1-eval/e74dfb6d99ed041f5f5240af386ba5272de84cdd/results/laya-all.jsonl",
+      "sha256": "3aa4ca1fb7224f7b1bd54c68364f808117f079ce5a0cf5eb341f69b63d0af9f4",
+      "bytes": 1634247
+    },
+    {
+      "path": "results/laya-c-fixed.jsonl",
+      "url": "https://raw.githubusercontent.com/David-DL-Space/sys1-eval/e74dfb6d99ed041f5f5240af386ba5272de84cdd/results/laya-c-fixed.jsonl",
+      "sha256": "294ab3a81dd8bc42236b72045be34591839b9ebc03382f263c67c89ebd065f24",
+      "bytes": 78284
+    }
+  ],
+  "scope": "2100-case six-track subset; not all 11 tracks; corrected C rows override all",
+  "binary_threshold": 0.5,
+  "invalid_output_policy": "count as wrong",
+  "limitations": "Labels and inference are external; no new model calls; no claim about current checkpoints"
+}

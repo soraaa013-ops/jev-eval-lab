@@ -1,0 +1,40 @@
+{
+  "evidence_type": "local_synthetic_diagnostic_inference",
+  "model": "laya",
+  "revision": "e333cb7c823cd1787276228260f56d02fbf5180b",
+  "device": "cpu",
+  "threads": 2,
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "case_count": 60,
+  "base_cases": 12,
+  "case_sha256": "62ef875276a7f0cb7fe5b42528f4ccfb6da35d3d1943539aa12c860dc381336c",
+  "note": "Hand-built diagnostics after a smoke probe; no human annotation study; no agent execution; variants correlated; do not rank models on this set",
+  "packages": {
+    "torch": "2.7.1+cpu",
+    "transformers": "4.57.6",
+    "safetensors": "0.8.0",
+    "huggingface-hub": "0.36.2"
+  },
+  "source_sha256": {
+    "rl_agent_api.py": "be3b46819c9999c3ef88e0f2ecf6d3ab1cdfed1d9a8b466fc89811e34d44031b",
+    "rl_common.py": "8d83611d480c971d640a7b7d3aa2f2219c5e8455e9cc2329fd073681bd8be23e",
+    "rl_agent_config.json": "ae287b56bbcf5f8c4f4541ae9dfd00c914c4c48b940b8398c3058af37ba92bbd",
+    "encoder/config.json": "bf3ab80598fdccf414855a2ce80f22859e4492d06ca8a62ddd1cfb63972f8979",
+    "tokenizer/tokenizer_config.json": "50044de60daaa73df97d262e15a40d4faf0160e7d742df64b377877a1320dd12",
+    "tokenizer/tokenizer.json": "6c8aaa9a542084f2457eab775d4eeb51f92a70c0fd9de28d5edb0ddec3c08d30"
+  },
+  "precision": "float32; released option-count temperatures",
+  "load_seconds": 18.408524006954394,
+  "warmup_calls_excluded": 1,
+  "weight_sha256": {
+    "model.safetensors": "891102d372688fc2a094dac56a384bc537b87c63f21f9f3dac0be2b7cbc8d86c"
+  },
+  "variants": [
+    "original",
+    "reverse_options",
+    "long_tail",
+    "injected_claim",
+    "no_evidence"
+  ]
+}

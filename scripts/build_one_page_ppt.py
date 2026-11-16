@@ -60,89 +60,99 @@ def section(x, y, w, title, subtitle):
     text(x, y + .5, w, .68, subtitle, 18, MUTED)
 
 
-# The slide separates measured results, external model descriptions, and a proposed roadmap.
+# All diagnostics and reanalysis figures below come from committed JSON artifacts.
+validation = ROOT / "artifacts/validation/system-one"
+laya = json.loads((validation / "laya-probes/metrics.json").read_text())
+d3 = json.loads((validation / "d3-edge-probes/metrics.json").read_text())
+external = json.loads((validation / "external-reanalysis/metrics.json").read_text())
+
+def count(m, key):
+    return f"{m[key]['correct']}/{m[key]['n']}"
+
 box(0, 0, 20, 1.36, NAVY)
-text(.55, .19, 19, .6, "Jev Eval Lab｜从模型评测走向 Agent 评估体系", 32, "FFFFFF", True)
-text(.57, .91, 19, .3, "研究问题：同类模型如何选？如何用低成本过程信号，改善可验证的任务质量与评估效率？", 19, "D6E5EE")
+text(.55, .2, 19, .6, "System One 模型｜验证结果与 Agent 评估方向", 32, "FFFFFF", True)
+text(.57, .92, 19, .3, "Jev Eval Lab · 新增：4 类公开实现核查 / 外部 2,100 案例复算 / 2 个小模型本地诊断", 19, "D6E5EE")
 box(.5, 1.56, 19, .72, "DDEFF0")
-text(.75, 1.73, 18.5, .4, "核心判断  System One 可承担高频、原子的语义检查；是否改善 agent，必须用独立真值与端到端实验验证。", 22, TEAL, True)
-text(.57, 2.48, 18.9, .58,
-     "已有实测：6,428 条判断；JudgeBench Jev 78.14% vs GPT-5 mini 85.71%，费用约 1/42、p50 约 1/32。\nRB2：四选一 82.47% / rating top-1 77.91%（协议及样本范围不同）；均为回答评估，尚无 agent 成功率提升证据。", 18, MUTED)
+text(.75, 1.73, 18.5, .4, "核心结论  优先做执行证据检查与失败分诊；便宜、类型化的输出，不等于可信的最终成功判定。", 23, TEAL, True)
+text(.57, 2.48, 18.9, .55,
+     "已有基线：6,428 条判断；JudgeBench Jev 78.14% vs GPT-5 mini 85.71%，费用约 1/42、p50 约 1/32。\nRB2 四选一 82.47%（自定义协议）；以上是回答质量实验，尚未证明 agent 端到端收益。新增诊断不并入原计数。", 18, MUTED)
 
-box(.5, 3.27, 9.35, 4.65, "FFFFFF")
-box(10.08, 3.27, 9.42, 4.65, "FFFFFF")
-text(.75, 3.47, 8.9, .4, "01  同类对照：比较路线，而非拼榜单", 23, NAVY, True)
-text(.75, 4.0, 8.85, .3, "以下为外部模型资料；除 Jev 外，均未在本仓库实测。", 16, MUTED)
-rows = [
-    ("模型", "主要差异", "评估候选与边界"),
-    ("Jev", "托管类型决策 API", "快速基线；需验证域内校准"),
-    ("Laya", "开放小型编码器", "短证据 / 可微调；注意截断"),
-    ("Kev", "开放 Qwen 决策模型", "自托管 / 可训练；计入算力成本"),
-    ("Clef / Flash", "开放 27B / 9B · 64K", "长证据 / 多问题；收益待实测"),
-    ("Decision 3.0", "开放多模态决策家族", "GUI 状态检查；须环境验证"),
+for xx in [.5, 6.92, 13.34]:
+    box(xx, 3.25, 6.16, 4.73, "FFFFFF")
+text(.73, 3.45, 5.7, .4, "01  同类模型：机制决定边界", 22, NAVY, True)
+models = [
+    ("Laya｜本地推理 60 次", "编码器，默认 512 tokens；长轨迹会截断。"),
+    ("d3-edge｜本地推理 36 次", "0.59B code readout；本轮仅验证文本。"),
+    ("Kev｜固定作者模型卡", "可训练 pointer head；域外能力须另测。"),
+    ("Clef-flash｜配置 / 代码核查", "9B 联合 schema；吞吐与问题干扰待测。"),
 ]
-widths = [1.7, 3.12, 4.02]
-for i, row in enumerate(rows):
-    yy = 4.47 + i * .42
-    box(.75, yy, 8.84, .42, NAVY if i == 0 else ("EEF4F6" if i % 2 == 0 else "FFFFFF"))
-    xx = .75
-    for j, val in enumerate(row):
-        text(xx + .07, yy + .085, widths[j] - .12, .3, val, 16,
-             "FFFFFF" if i == 0 else INK, i == 0)
-        xx += widths[j]
-text(.76, 7.12, 8.82, .62,
-     "外部配对研究：Jev 在 11 类 agent 决策点中 9 类领先 Laya；\n但两者零样本模型路由均未超过随机水平，不能泛化为全能评委。[1]", 16, TEAL)
+for i, (title, body) in enumerate(models):
+    yy = 4.05 + i * .79
+    text(.75, yy, 5.65, .33, title, 19, TEAL, True)
+    text(.75, yy + .36, 5.65, .36, body, 17)
+text(.75, 7.36, 5.65, .43, "同一 API ≠ 相同概率语义、证据预算与计算量。", 16, MUTED)
 
-text(10.33, 3.47, 8.9, .4, "02  对 Agent 评估：过程信号＋分层复核", 23, NAVY, True)
-text(10.33, 4.02, 8.9, .65,
-     "离线评委：标注轨迹、定位失败、回归筛查、分配人工审核。\n在线控制：重试 / 停止 / 升级，会改变行为，必须重跑任务。", 18)
-for yy, title, detail in [
-    (4.94, "A  规则 / 环境真值", "检查测试、文件、状态变化与硬约束；保存证据。"),
-    (5.7, "B  System One 检查", "工具是否适用？返回是否支持结论？是否虚假报成功？"),
-    (6.46, "C  强模型 / 人工复核", "处理证据不足、复杂推理与重要分歧；允许弃判。"),
+text(7.15, 3.45, 5.7, .4, "02  验证证据：按任务判断", 22, NAVY, True)
+text(7.16, 4.0, 5.67, .3, "外部原始响应复算 · 历史 Jev / Laya", 17, TEAL, True)
+rows = [("正确率", "Jev", "Laya")]
+for label, key in [("工具选择", "B_tool_selection"), ("模型路由", "A_model_router"), ("RAG 门控", "D_rag_gate")]:
+    m = external[key]
+    rows.append((label, f"{m['jev_accuracy']:.2%}", f"{m['laya_accuracy']:.2%}"))
+for i, vals in enumerate(rows):
+    yy = 4.46 + .36*i
+    box(7.16, yy, 5.67, .36, NAVY if i == 0 else ("EDF4F6" if i % 2 == 0 else "FFFFFF"))
+    for j, val in enumerate(vals):
+        offset, width = [(0, 2.28), (2.28, 1.65), (3.93, 1.74)][j]
+        text(7.23+offset, yy+.055, width-.12, .28, val, 16, "FFFFFF" if i == 0 else INK, i==0)
+text(7.16, 6.04, 5.67, .3, "本地诊断 · 正确数（Laya / d3-edge）", 17, TEAL, True)
+text(7.16, 6.48, 5.67, .7,
+     f"短证据：{count(laya,'original')} / {count(d3,'original')}；缺证据：{count(laya,'no_evidence')} / {count(d3,'no_evidence')}。\nLaya：12 条长输入截断后，仅剩 1 种 token 序列。", 17)
+text(7.16, 7.43, 5.67, .35, "合成诊断仅定位故障，不排名通用能力；细节见报告。", 14, MUTED)
+
+text(13.57, 3.45, 5.7, .4, "03  Agent 评估：先做什么", 22, NAVY, True)
+for yy, title, body in [
+    (4.05, "优先｜证据支持＋失败分诊", "看工具返回与实际状态，核验成功声明；\n输出支持 / 反驳 / 证据不足，允许复核。"),
+    (5.18, "保留｜结果验证＋独立审核", "规则检查硬约束，模型检查语义；\n抽查高置信通过，测漏检与版本回归。"),
+    (6.31, "后置｜在线停止 / 重试 / 路由", "它们会改变 agent 行为，必须重跑任务；\n验收成功率、误拦、总费用与端到端 p95。"),
 ]:
-    box(10.33, yy, 2.78, .54, "DDEFF0")
-    text(10.47, yy + .12, 2.55, .3, title, 17, TEAL, True)
-    text(13.3, yy + .1, 5.9, .45, detail, 17)
-text(10.34, 7.27, 8.85, .4,
-     "看真实执行证据，不凭 agent 自述；单步分数 ≠ 最终任务成功率。", 18, TEAL, True)
+    text(13.59, yy, 5.65, .35, title, 19, TEAL, True)
+    text(13.59, yy+.39, 5.65, .65, body, 17)
+text(13.59, 7.57, 5.65, .26, "步骤分数不能替代真实任务结果。", 16, MUTED)
 
-text(.55, 8.17, 19, .4, "03  发展路线：先评估评委，再评估整套系统；数据稳定后才考虑后训练", 23, NAVY, True)
+text(.55, 8.2, 19, .4, "04  发展路线：先证明评委可靠，再证明系统收益；数据稳定后考虑专用训练", 23, NAVY, True)
 phases = [
-    ("①  建真值与轨迹集", "定义成功条件与原子 rubric；\n环境验证＋人工仲裁。\n按任务族分训练 / 校准 / 测试。"),
-    ("②  同协议比较评委", "规则 / 强 LLM / Jev / 开放模型；\n测漏检、误报、校准、风险覆盖；\n扰动顺序、长度、语言与注入。"),
-    ("③  影子运行 → 闭环消融", "先只打标，再比较是否干预。\n看成功率、违规率、过早停止；\n算每次成功总费用与端到端 p95。"),
-    ("④  校准与专用训练", "阈值只在独立校准集选择；\n累积真实错误和分歧再微调。\n保留锁定盲测、漂移监控与回归。"),
+    ("①  建立独立真值", "任务条件＋状态证据＋人工仲裁；\n训练 / 校准 / 测试按任务族隔离。"),
+    ("②  评估评委本身", "AgentRewardBench 测最终判定；\nAgentProcessBench 测步骤质量。"),
+    ("③  影子运行 → 闭环实验", "先不干预，再比较规则 / 快评委 /\n升级策略；计入提取与复核成本。"),
+    ("④  校准 → 训练 → 回归", "以漏检—覆盖—成本选择模型；\n保留锁定盲测与域外、漂移检查。"),
 ]
 for i, (title, body) in enumerate(phases):
     xx = .5 + i * 4.8
-    box(xx, 8.79, 4.6, 1.76, "FFFFFF")
-    text(xx + .19, 8.97, 4.25, .35, title, 20, NAVY, True)
-    text(xx + .19, 9.46, 4.25, .94, body, 17)
+    box(xx, 8.81, 4.6, 1.71, "FFFFFF")
+    text(xx+.19, 9.0, 4.25, .35, title, 20, NAVY, True)
+    text(xx+.19, 9.51, 4.25, .78, body, 17)
 text(.55, 10.78, 19, .25,
-     "来源：本仓库 report/ 与 artifacts/；同类模型官方资料；[1] arXiv:2610.02267（外部研究，限定其版本与任务）。详见备注与配套报告。  |  2026-11-16 · 1 / 1", 12, MUTED)
+     "来源与边界：report/system-one-agent-evaluation.md · artifacts/validation/system-one/；本地诊断、外部重算、作者报告分开。底部路线尚待实施。  |  2026-11-16 · 1/1", 12, MUTED)
 slide.notes_slide.notes_text_frame.text = (
-    "通用 Agent 评估方向；没有假设某个具体项目。\n"
-    "证据分层：本仓库已有实测；外部论文/作者资料；尚未执行的发展建议。其他决策模型尚未在本仓库运行。\n"
-    "配套说明与完整引用：report/system-one-agent-evaluation.md。原报告：report/report.md、report/experiment-report.md。\n"
-    "JudgeBench为350对双顺序，4模型共2800条；RB2 rating1865条、ranking1763条，共6428。\n"
-    "JudgeBench逐次/严格双顺序/顺序一致：GPT-5 mini 85.71/80.57/89.71；Jev 78.14/70.57/84.86；"
-    "Qwen 64.29/40.00/51.43；Skywork 60.29/60.29/100。Skywork为CPU 256-token左截断、同分数派生交换。\n"
-    "Jev ECE0.041；对GPT-5 mini准确率差-7.57pp，95%CI[-11.71,-3.43]；按题10000次bootstrap。\n"
-    "RB2四选一仅非Ties；rating为全量，严格排序77.75%，派生pairwise93.12%。本项目自定义适配，非官方榜单。\n"
-    "工程：Decisions/Chat/本地模型/mock；TOML、断点续跑、版本/数据/请求哈希、原始响应、离线重算与错误审计。\n"
-    "外部资料核查于2026-11-16；模型版本不同，不拼接异构benchmark排名：\n"
-    "Laya：https://huggingface.co/convaiinnovations/laya\n"
-    "Kev：https://github.com/jaredpalmer/kev\n"
-    "Clef：https://developers.cloudflare.com/changelog/post/2026-10-01-clef-workers-ai/\n"
-    "d3：https://huggingface.co/vllm-sr/d3\n"
-    "[1] https://arxiv.org/abs/2610.02267 （Jev/Laya配对研究，非本仓库实测；该版本不能代表后续模型）\n"
-    "控制基线还应包括开放LLM直接读取选项logits，以及简单决策头微调：https://arxiv.org/abs/2610.17205\n"
-    "实施：先轨迹契约与独立真值，再评委验证、影子运行、闭环实验，最后考虑训练。计入证据提取、重试、升级与人工成本。\n"
-    "风险覆盖、路由阈值须独立校准。不能以旧轨迹离线判断证明新控制策略能改善真实任务。"
+    "配套报告：report/system-one-agent-evaluation.md；本轮证据：artifacts/validation/system-one/README.md。\n"
+    "已有benchmark与新验证严格分开：原6,428条；外部复算2,100案例、两个模型；本地正式诊断Laya60条、d3-edge36条，均为合成。\n"
+    "d3原60-case探索在5条后因CPU长文本约53秒/次中断；包括失败的原始结果保留在d3-edge-exploratory。\n"
+    "缺证据组有4个唯一输入，各重复3次；所有变体相关，不能视为独立样本。不据此做通用排名。\n"
+    "外部复算固定sys1-eval commit e74dfb6d99ed041f5f5240af386ba5272de84cdd；Jev1.13.0与历史Laya，不是当前模型的新对战。\n"
+    "完整六轨道复算正确率：Jev76.71%，Laya63.10%；作者修正的C轨道覆盖旧行；当前未重新人工核验外部标签。\n"
+    "模型源与SHA256见catalog.json，各本地run包含代码/权重哈希、实际库版本、精度和原始返回。\n"
+    "Laya confidence为1-归一化熵，不是P(correct)。应统一校准实际选中答案概率。\n"
+    "Kev与Clef未在本机推理；d3只测文本，不验证其视觉、多模态或长轨迹能力。CPU延迟不能与厂商GPU或API延迟直接比较。\n"
+    "规则验证器也需审核能否接受正确替代路径。在线控制仅看当时可见信息，离线全轨迹不能冒充在线能力。\n"
+    "AgentRewardBench: https://arxiv.org/abs/2504.08942v2\n"
+    "AgentProcessBench: https://arxiv.org/abs/2603.14465v2\n"
+    "System One配对研究: https://arxiv.org/abs/2610.02267\n"
+    "System1-Arena: https://arxiv.org/html/2610.21244v1 ；相同步准确率不保证相同闭环成功率，详见报告。\n"
+    "模型固定来源及其他论文链接详见配套报告。底部为建议的后续实验，本轮没有运行上述两个agent benchmark。\n"
+    "简化级联成本=C_extract+C_fast+q*C_strong，必须在相同质量约束下比较；还需计入失败重试、自托管与人工工时。"
 )
-prs.core_properties.title = "Jev Eval Lab｜System One 对照与通用 Agent 评估路线"
-prs.core_properties.subject = "已有实测、同类模型、过程评估与闭环验证"
+prs.core_properties.title = "System One 模型验证与通用 Agent 评估建议"
+prs.core_properties.subject = "固定实现、外部复算、本地诊断与证据化评估路线"
 prs.core_properties.author = "Jev Eval Lab"
 OUT.parent.mkdir(parents=True, exist_ok=True)
 prs.save(OUT)

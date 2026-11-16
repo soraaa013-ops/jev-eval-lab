@@ -1,0 +1,8 @@
+{
+  "status": "interrupted_by_operator",
+  "reason": "CPU long-input latency; limited formal run to original/reverse_options/no_evidence before completion. Retained all exploratory results including failures.",
+  "planned_cases": 60,
+  "completed_cases": 5,
+  "model_revision": "bee5e872f75b9c5d1405767bf244a6948b95c0af",
+  "use_for_comparative_metrics": false
+}

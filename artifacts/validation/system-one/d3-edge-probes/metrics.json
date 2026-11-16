@@ -1,0 +1,21 @@
+{
+  "original": {
+    "n": 12,
+    "correct": 11,
+    "accuracy": 0.9166666666666666,
+    "p50_ms": 9496.040891041048
+  },
+  "reverse_options": {
+    "n": 12,
+    "correct": 11,
+    "accuracy": 0.9166666666666666,
+    "p50_ms": 9286.758215515874,
+    "changed_vs_original": 0
+  },
+  "no_evidence": {
+    "n": 12,
+    "correct": 6,
+    "accuracy": 0.5,
+    "p50_ms": 8736.697182059288
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "ALL": {
+    "n": 2100,
+    "jev_correct": 1611,
+    "laya_correct": 1325,
+    "jev_only_correct": 455,
+    "laya_only_correct": 169,
+    "jev_accuracy": 0.7671428571428571,
+    "laya_accuracy": 0.6309523809523809
+  },
+  "A_model_router": {
+    "n": 400,
+    "jev_correct": 200,
+    "laya_correct": 194,
+    "jev_only_correct": 86,
+    "laya_only_correct": 80,
+    "jev_accuracy": 0.5,
+    "laya_accuracy": 0.485
+  },
+  "B_tool_selection": {
+    "n": 400,
+    "jev_correct": 398,
+    "laya_correct": 336,
+    "jev_only_correct": 63,
+    "laya_only_correct": 1,
+    "jev_accuracy": 0.995,
+    "laya_accuracy": 0.84
+  },
+  "C_tool_guardrail": {
+    "n": 300,
+    "jev_correct": 236,
+    "laya_correct": 178,
+    "jev_only_correct": 66,
+    "laya_only_correct": 8,
+    "jev_accuracy": 0.7866666666666666,
+    "laya_accuracy": 0.5933333333333334
+  },
+  "D_rag_gate": {
+    "n": 400,
+    "jev_correct": 243,
+    "laya_correct": 234,
+    "jev_only_correct": 67,
+    "laya_only_correct": 58,
+    "jev_accuracy": 0.6075,
+    "laya_accuracy": 0.585
+  },
+  "E_injection_guard": {
+    "n": 400,
+    "jev_correct": 372,
+    "laya_correct": 313,
+    "jev_only_correct": 78,
+    "laya_only_correct": 19,
+    "jev_accuracy": 0.93,
+    "laya_accuracy": 0.7825
+  },
+  "F_cardinality_multilingual": {
+    "n": 200,
+    "jev_correct": 162,
+    "laya_correct": 70,
+    "jev_only_correct": 95,
+    "laya_only_correct": 3,
+    "jev_accuracy": 0.81,
+    "laya_accuracy": 0.35
+  }
+}
