@@ -10,6 +10,12 @@ The research focus is evaluation, not a claim that Jev should replace an LLM.
 The report separately surveys existing Jev applications so that benchmark
 results can be interpreted in the wider decision-model landscape.
 
+## Experiment presentation
+
+Read the new 17-slide Chinese explanation: [PowerPoint](report/jev-eval-lab-experiments.pptx)
+· [PDF](report/jev-eval-lab-experiments.pdf). It focuses on data, judging methods,
+scoring rules, and results, with a detailed walkthrough of the agent experiment.
+
 ## Full project tutorial
 
 Read the [中文实验讲解](docs/tutorial.zh-CN.md) for the research questions,
