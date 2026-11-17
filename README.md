@@ -12,6 +12,8 @@ results can be interpreted in the wider decision-model landscape.
 
 ## Experiment presentation
 
+Concise experiment summaries: [one-slide PPT](report/jev-eval-lab-one-page.pptx) · [PDF](report/jev-eval-lab-one-page.pdf); [four-slide PPT](report/jev-eval-lab-four-pages.pptx) · [PDF](report/jev-eval-lab-four-pages.pdf).
+
 Read the new 17-slide Chinese explanation: [PowerPoint](report/jev-eval-lab-experiments.pptx)
 · [PDF](report/jev-eval-lab-experiments.pdf). It focuses on data, judging methods,
 scoring rules, and results, with a detailed walkthrough of the agent experiment.

@@ -1,5 +1,10 @@
 # Reports
 
+精简实验汇报（仅数据、评判方法与结果）：
+
+- 一页版：[PPT](jev-eval-lab-one-page.pptx) · [PDF](jev-eval-lab-one-page.pdf)
+- 四页版：[PPT](jev-eval-lab-four-pages.pptx) · [PDF](jev-eval-lab-four-pages.pdf)
+
 新版实验讲解（17 页）：[可编辑 PPT](jev-eval-lab-experiments.pptx) · [PDF 预览](jev-eval-lab-experiments.pdf)。重点解释数据、评判方法与结果，展开 agent 完整轨迹评分，并区分 RewardBench 2 的优劣标签与模型评分。
 
 实验导读：[中文实验讲解](../docs/tutorial.zh-CN.md)，用具体例子解释数据设计、评判方法、计分规则与三组实验结果。

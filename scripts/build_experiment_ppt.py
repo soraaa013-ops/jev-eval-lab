@@ -162,5 +162,6 @@ card(s,10.55,2.35,4.6,'Agent 过程','本轮 Jev 领先\n但仍漏掉多数错�
 banner(s,'下一步要测：接入评委后，agent 是否真的更容易完成任务，而不是只得到更高评分。')
 text(s,1.05,6.25,13.7,.55,'本轮未验证：只看历史前缀的实时检查、在线纠错收益、独立校准后的转交策略。',21,MUTED)
 
-prs.save(OUT)
-print(f'{OUT} ({len(prs.slides)} slides)')
+if __name__ == '__main__':
+    prs.save(OUT)
+    print(f'{OUT} ({len(prs.slides)} slides)')
