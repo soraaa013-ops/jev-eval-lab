@@ -29,9 +29,10 @@ continued (288/1,865 valid), and no partial rating aggregate is claimed.
 
 Concise experiment summaries: [one-slide PPT](report/jev-eval-lab-one-page.pptx) · [PDF](report/jev-eval-lab-one-page.pdf); [four-slide PPT](report/jev-eval-lab-four-pages.pptx) · [PDF](report/jev-eval-lab-four-pages.pdf).
 
-Read the new 17-slide Chinese explanation: [PowerPoint](report/jev-eval-lab-experiments.pptx)
+Read the new 19-slide Chinese explanation: [PowerPoint](report/jev-eval-lab-experiments.pptx)
 · [PDF](report/jev-eval-lab-experiments.pdf). It focuses on data, judging methods,
-scoring rules, and results, with a detailed walkthrough of the agent experiment.
+scoring rules, and results, including the completed GPT-5 / GPT-5 mini / Jev
+RewardBench 2 comparison and a detailed walkthrough of the agent experiment.
 
 ## Full project tutorial
 
