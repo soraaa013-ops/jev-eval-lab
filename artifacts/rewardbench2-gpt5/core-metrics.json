@@ -1,0 +1,234 @@
+{
+  "scope": "Requested winner-selection study complete; Ties retained as supplement; full rating not continued at user request",
+  "ranking": {
+    "jev": {
+      "ALL": {
+        "samples": 1763,
+        "valid": 1763,
+        "missing": 0,
+        "accuracy": 0.8247305728871243
+      },
+      "Factuality": {
+        "samples": 475,
+        "valid": 475,
+        "missing": 0,
+        "accuracy": 0.8042105263157895
+      },
+      "Focus": {
+        "samples": 495,
+        "valid": 495,
+        "missing": 0,
+        "accuracy": 0.9353535353535354
+      },
+      "Math": {
+        "samples": 183,
+        "valid": 183,
+        "missing": 0,
+        "accuracy": 0.726775956284153
+      },
+      "Precise IF": {
+        "samples": 160,
+        "valid": 160,
+        "missing": 0,
+        "accuracy": 0.50625
+      },
+      "Safety": {
+        "samples": 450,
+        "valid": 450,
+        "missing": 0,
+        "accuracy": 0.8777777777777778
+      },
+      "runtime": {
+        "reported_cost_usd": 0.160977474,
+        "latency_ms_p50": 432.0907639921643,
+        "latency_ms_p95": 514.551894791657,
+        "mean_latency_ms": 446.5798695211315,
+        "response_models": {
+          "typesafe/jev-1.14-20261014": 1763
+        }
+      }
+    },
+    "gpt5": {
+      "ALL": {
+        "samples": 1763,
+        "valid": 1763,
+        "missing": 0,
+        "accuracy": 0.8394781622234827
+      },
+      "Factuality": {
+        "samples": 475,
+        "valid": 475,
+        "missing": 0,
+        "accuracy": 0.8736842105263158
+      },
+      "Focus": {
+        "samples": 495,
+        "valid": 495,
+        "missing": 0,
+        "accuracy": 0.8080808080808081
+      },
+      "Math": {
+        "samples": 183,
+        "valid": 183,
+        "missing": 0,
+        "accuracy": 0.8961748633879781
+      },
+      "Precise IF": {
+        "samples": 160,
+        "valid": 160,
+        "missing": 0,
+        "accuracy": 0.65625
+      },
+      "Safety": {
+        "samples": 450,
+        "valid": 450,
+        "missing": 0,
+        "accuracy": 0.88
+      },
+      "runtime": {
+        "reported_cost_usd": 22.51459775,
+        "latency_ms_p50": 13652.720090001822,
+        "latency_ms_p95": 41644.11447083108,
+        "mean_latency_ms": 17538.22324877153,
+        "response_models": {
+          "openai/gpt-5": 1763
+        }
+      }
+    }
+  },
+  "ties_rating": {
+    "jev": {
+      "ALL": {
+        "samples": 102,
+        "valid": 102,
+        "missing": 0,
+        "top1_accuracy": 0.9901960784313726,
+        "strict_ranking_accuracy": 0.9901960784313726,
+        "derived_pairwise_accuracy": 0.9998257536156124
+      },
+      "Ties": {
+        "samples": 102,
+        "valid": 102,
+        "missing": 0,
+        "top1_accuracy": 0.9901960784313726,
+        "strict_ranking_accuracy": 0.9901960784313726,
+        "derived_pairwise_accuracy": 0.9998257536156124
+      },
+      "Ties_margin_formula": {
+        "paired_prompts": 51,
+        "score": 0.9791150545611895,
+        "ref_accuracy": 0.9803921568627451,
+        "tied_accuracy": 1.0,
+        "correctness_preferred": 0.9411764705882353,
+        "correctness_preferred_hard": 0.9411764705882353,
+        "margin_score": 0.8526819267071952
+      },
+      "runtime": {
+        "reported_cost_usd": 0.012477738,
+        "latency_ms_p50": 517.1368065057322,
+        "latency_ms_p95": 635.070987875224,
+        "mean_latency_ms": 530.2383745204447,
+        "response_models": {
+          "typesafe/jev-1.14-20261014": 102
+        }
+      }
+    },
+    "gpt5": {
+      "ALL": {
+        "samples": 102,
+        "valid": 102,
+        "missing": 0,
+        "top1_accuracy": 1.0,
+        "strict_ranking_accuracy": 0.9607843137254902,
+        "derived_pairwise_accuracy": 0.9977347970029622
+      },
+      "Ties": {
+        "samples": 102,
+        "valid": 102,
+        "missing": 0,
+        "top1_accuracy": 1.0,
+        "strict_ranking_accuracy": 0.9607843137254902,
+        "derived_pairwise_accuracy": 0.9977347970029622
+      },
+      "Ties_margin_formula": {
+        "paired_prompts": 51,
+        "score": 0.9179309294817937,
+        "ref_accuracy": 0.9803921568627451,
+        "tied_accuracy": 0.9411764705882353,
+        "correctness_preferred": 0.8627450980392157,
+        "correctness_preferred_hard": 0.8431372549019608,
+        "margin_score": 0.028387065826415488
+      },
+      "runtime": {
+        "reported_cost_usd": 1.61131425,
+        "latency_ms_p50": 17743.433193012606,
+        "latency_ms_p95": 35901.10133550477,
+        "mean_latency_ms": 20387.10017139937,
+        "response_models": {
+          "openai/gpt-5": 102
+        }
+      }
+    }
+  },
+  "paired_ranking_differences": {
+    "ALL_NON_TIES": {
+      "gpt5_minus_jev": 0.01474758933635848,
+      "paired_item_bootstrap_95ci": [
+        -0.005119115144639806,
+        0.035734543391945546
+      ],
+      "items": 1763
+    },
+    "Factuality": {
+      "gpt5_minus_jev": 0.06947368421052631,
+      "paired_item_bootstrap_95ci": [
+        0.031578947368421054,
+        0.10736842105263159
+      ],
+      "items": 475
+    },
+    "Focus": {
+      "gpt5_minus_jev": -0.12727272727272726,
+      "paired_item_bootstrap_95ci": [
+        -0.1595959595959596,
+        -0.09494949494949495
+      ],
+      "items": 495
+    },
+    "Math": {
+      "gpt5_minus_jev": 0.16939890710382513,
+      "paired_item_bootstrap_95ci": [
+        0.10382513661202186,
+        0.24043715846994534
+      ],
+      "items": 183
+    },
+    "Precise IF": {
+      "gpt5_minus_jev": 0.15,
+      "paired_item_bootstrap_95ci": [
+        0.0625,
+        0.2375
+      ],
+      "items": 160
+    },
+    "Safety": {
+      "gpt5_minus_jev": 0.0022222222222222222,
+      "paired_item_bootstrap_95ci": [
+        -0.03333333333333333,
+        0.035555555555555556
+      ],
+      "items": 450
+    }
+  },
+  "coverage": {
+    "ranking_planned": 1763,
+    "ranking_valid": 1763,
+    "rating_planned": 1865,
+    "rating_valid": 288,
+    "ties_planned": 102,
+    "ties_valid": 102
+  },
+  "reported_cost_all_main_usd": 28.16828,
+  "pilot_reported_cost_usd": 0.22828,
+  "admission_rejection_events": 1733
+}

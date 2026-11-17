@@ -1,5 +1,9 @@
 # Reports
 
+最新：[GPT-5 mini / GPT-5 / Jev 的 RewardBench 2 四选一对照](rewardbench2-gpt5mini-comparison.md)。mini 全部 1,763 题已完成，准确率 81.57%，正式费用 $2.7800。
+
+新增：[GPT-5 与 Jev 的 RewardBench 2 对照结果](rewardbench2-gpt5-comparison.md)。按本轮要求完成四选一 1,763 题；另保留已完成的 Ties 102 条补充结果，不再继续全量评分。
+
 精简实验汇报（仅数据、评判方法与结果）：
 
 - 一页版：[PPT](jev-eval-lab-one-page.pptx) · [PDF](jev-eval-lab-one-page.pdf)

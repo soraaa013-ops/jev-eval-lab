@@ -1,0 +1,13 @@
+{
+  "status": "requested_ranking_complete_rating_not_continued",
+  "planned_logical_requests": 3628,
+  "valid_logical_requests": 2051,
+  "ranking_valid": 1763,
+  "rating_valid": 288,
+  "unadmitted_rating_requests": 1577,
+  "event_rows": 3784,
+  "archive_sha256": "ad0690ec3ace10baa9a5d53365a55baa96b2cb7269f0eac3fe7ee644751a247a",
+  "archive_account_ids_removed": 1733,
+  "all_processes_finished": true,
+  "scope_decision": "User requested completion of winner selection only; no remaining API work scheduled"
+}

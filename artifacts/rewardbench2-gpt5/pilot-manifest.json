@@ -1,0 +1,85 @@
+{
+  "created_at": "2026-11-17T09:31:54.106756+00:00",
+  "concurrency": 8,
+  "identity": {
+    "protocol": "rb2-gpt5-medium-v1",
+    "model": "openai/gpt-5",
+    "reasoning_effort": "medium",
+    "max_tokens": 16384,
+    "data_sha256": "6999c797b2fdb9ed2a1aeb1fec481ee64640bcaaea69fb3116f7c740e9c10895",
+    "jobs": [
+      {
+        "id": "0",
+        "subset": "Factuality",
+        "mode": "ranking",
+        "request_sha256": "20968fecbacf41727bfe24b867d86c98a55df2f9ff93f9ba3bb65f603751b839"
+      },
+      {
+        "id": "0",
+        "subset": "Precise IF",
+        "mode": "ranking",
+        "request_sha256": "43fbbaff9322724bc16422310b348716894cbd7d7cae97da19bb35512aca8d9c"
+      },
+      {
+        "id": "10",
+        "subset": "Math",
+        "mode": "ranking",
+        "request_sha256": "67f4c8ba37518086cfde61fe8b845fda099348ded16d0a64ab4e91e19f9b0e3a"
+      },
+      {
+        "id": "20",
+        "subset": "Safety",
+        "mode": "ranking",
+        "request_sha256": "8361f293f2e0d86b17c19d2cf0c8430ab0c56468436f9a4fd5185af8f51e002d"
+      },
+      {
+        "id": "40",
+        "subset": "Focus",
+        "mode": "ranking",
+        "request_sha256": "80bd2cd3bc8f46df9dd01ef248832f13bafc1a47643741888f21643e33584fbc"
+      },
+      {
+        "id": "0",
+        "subset": "Factuality",
+        "mode": "rating",
+        "request_sha256": "8f486369ab455a0fdb7335e3db5bac4b66e8fbc11af7edb94ed790d37211a051"
+      },
+      {
+        "id": "0",
+        "subset": "Precise IF",
+        "mode": "rating",
+        "request_sha256": "8154cd34b39e2b18a0b60db4c72c152cd1fd15c97c69fd49af216e258b7bd092"
+      },
+      {
+        "id": "10",
+        "subset": "Math",
+        "mode": "rating",
+        "request_sha256": "221bdb078bdeb59fc6992054917a7cde796353d8e71def224b65bf42ffaa1766"
+      },
+      {
+        "id": "20",
+        "subset": "Safety",
+        "mode": "rating",
+        "request_sha256": "3f47826af42b144c7808bc24cf6cab72e954b3ae93b5388fae39b9ee2bcbc671"
+      },
+      {
+        "id": "40",
+        "subset": "Focus",
+        "mode": "rating",
+        "request_sha256": "165bc4d1a260baed9da6968dde9a562c297158479e108c4188e594a4fa97ecf3"
+      },
+      {
+        "id": "tied:0",
+        "subset": "Ties",
+        "mode": "rating",
+        "request_sha256": "f1c334872d03719391e07d6181b8427196beb54d9b64bdfff80eed79a14367d9"
+      },
+      {
+        "id": "tied:2",
+        "subset": "Ties",
+        "mode": "rating",
+        "request_sha256": "b6f3423a4d2529172c4b9836b18b27b74bd2153c12a06e1d7582154b71c193a7"
+      }
+    ]
+  }
+}

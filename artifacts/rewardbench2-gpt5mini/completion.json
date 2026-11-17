@@ -1,0 +1,14 @@
+{
+  "status": "complete",
+  "scope": "1763 non-Ties winner-selection questions only",
+  "model": "openai/gpt-5-mini",
+  "reasoning_effort": "medium",
+  "planned": 1763,
+  "valid": 1763,
+  "failures": 0,
+  "correct": 1438,
+  "reported_main_cost_usd": 2.78003515,
+  "reported_pilot_cost_usd": 0.010918250000000001,
+  "archive_sha256": "d4540cfa55de13c8610aa0811453dc8360a81f23926b9b56b5b5ea31ba98eb5f",
+  "no_running_requests": true
+}

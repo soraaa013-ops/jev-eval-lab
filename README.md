@@ -10,6 +10,21 @@ The research focus is evaluation, not a claim that Jev should replace an LLM.
 The report separately surveys existing Jev applications so that benchmark
 results can be interpreted in the wider decision-model landscape.
 
+## New: GPT-5 mini on RewardBench 2
+
+[Read the three-model winner-selection comparison](report/rewardbench2-gpt5mini-comparison.md).
+All 1,763 questions completed: GPT-5 mini **81.57%**, Jev **82.47%**, GPT-5 **83.95%**.
+Mini's main run cost **$2.7800**. Its paired accuracy difference versus Jev includes
+zero; the category differences are more informative than the small overall gap.
+
+## New: GPT-5 on RewardBench 2
+
+[Read the GPT-5 versus Jev experiment](report/rewardbench2-gpt5-comparison.md).
+All 1,763 winner-selection questions and 102 Ties ratings are complete.
+GPT-5 scores 83.95% versus Jev's 82.47% on winner selection; the paired difference
+interval includes zero. The requested winner-selection study is complete. Full-dataset rating was not
+continued (288/1,865 valid), and no partial rating aggregate is claimed.
+
 ## Experiment presentation
 
 Concise experiment summaries: [one-slide PPT](report/jev-eval-lab-one-page.pptx) · [PDF](report/jev-eval-lab-one-page.pdf); [four-slide PPT](report/jev-eval-lab-four-pages.pptx) · [PDF](report/jev-eval-lab-four-pages.pdf).

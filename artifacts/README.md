@@ -1,5 +1,9 @@
 # Experiment results index
 
+**Latest:** [GPT-5 mini winner-selection comparison](rewardbench2-gpt5mini/README.md): all 1,763 non-Ties questions completed; 81.57% accuracy, $2.7800 reported main cost. Matched against Jev and GPT-5 on identical candidates.
+
+**New comparison:** [GPT-5 on RewardBench 2](rewardbench2-gpt5/README.md): complete 1,763-row ranking and 102-row Ties rating; all-dataset rating is incomplete (288/1,865 valid). These results are separate from the historical 6,428-judgment ledger below.
+
 **New primary study:** [AgentProcessBench judge comparison](agentprocessbench/README.md):
 500 trajectories, 6,147 human step labels, Jev / Clef-flash / GPT-5 mini.
 These trajectory judgments are separate from the original answer-quality ledger.
@@ -64,7 +68,7 @@ four-choice distribution.
 
 ## Important scope note
 
-JudgeBench compares four models. RewardBench 2 currently evaluates Jev only;
-it compares protocols, not models. These two kinds of result must not be merged
+JudgeBench compares four models. The original RewardBench 2 ledger evaluates Jev only;
+it compares protocols, not models. The new GPT-5 comparison is linked above. These two kinds of result must not be merged
 into a single leaderboard.
 

@@ -14,3 +14,7 @@ artifacts/runs/*
 !artifacts/runs/rewardbench2-jev-ranking/
 !artifacts/runs/judgebench-skywork-rm-0.6b-256/
 
+
+# Full GPT-5 event log is committed as a compressed JSONL archive.
+artifacts/rewardbench2-gpt5/results.jsonl
+artifacts/rewardbench2-gpt5mini/results.jsonl

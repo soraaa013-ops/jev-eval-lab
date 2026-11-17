@@ -1,0 +1,43 @@
+{
+  "created_at": "2026-11-17T09:59:14.892719+00:00",
+  "concurrency": 5,
+  "identity": {
+    "protocol": "rb2-gpt5-mini-medium-ranking-v1",
+    "model": "openai/gpt-5-mini",
+    "reasoning_effort": "medium",
+    "max_tokens": 16384,
+    "data_sha256": "6999c797b2fdb9ed2a1aeb1fec481ee64640bcaaea69fb3116f7c740e9c10895",
+    "jobs": [
+      {
+        "id": "0",
+        "subset": "Factuality",
+        "mode": "ranking",
+        "request_sha256": "92cd6a9e0d40ac97e1f3789c6dae343719b4e98dc6306816a466bc3e34314f79"
+      },
+      {
+        "id": "0",
+        "subset": "Precise IF",
+        "mode": "ranking",
+        "request_sha256": "599e98fd2099a2fa593136aca82394c22dc2ce0b18f98e74dec90a94c1414d4a"
+      },
+      {
+        "id": "10",
+        "subset": "Math",
+        "mode": "ranking",
+        "request_sha256": "70903fad06cc73c3dd19cbdb65b2fa7e3fda53968a83138e150082d85bb7eb17"
+      },
+      {
+        "id": "20",
+        "subset": "Safety",
+        "mode": "ranking",
+        "request_sha256": "931299bee6715d4b304b7b72f325cb71249ccd4cb8d43d85a578002b1b10c15a"
+      },
+      {
+        "id": "40",
+        "subset": "Focus",
+        "mode": "ranking",
+        "request_sha256": "2934aff9816d2581bf8c4e52ae95c8347753324be77c55ef7451221c36539c36"
+      }
+    ]
+  }
+}
