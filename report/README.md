@@ -1,5 +1,7 @@
 # Reports
 
+项目实现导读：[完整中文教程](../docs/tutorial.zh-CN.md)，从研究问题、设计取舍到代码、实验和离线复核。
+
 一页汇报：[可编辑 PPT](jev-eval-lab-one-page.pptx) · [PDF 预览](jev-eval-lab-one-page.pdf)。
 当前主线：[System One 如何评估 Agent](agent-judge-benchmark.md)。先讲清机制，再比较三个评委在 500 条真实轨迹上的判定。
 旧回答质量实验和合成诊断保留为历史补充，避免混淆。

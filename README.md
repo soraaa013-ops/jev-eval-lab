@@ -10,6 +10,12 @@ The research focus is evaluation, not a claim that Jev should replace an LLM.
 The report separately surveys existing Jev applications so that benchmark
 results can be interpreted in the wider decision-model landscape.
 
+## Full project tutorial
+
+Read the [完整中文教程](docs/tutorial.zh-CN.md) for the project’s development,
+design decisions, code walkthrough, answer-quality and agent experiments,
+limitations, and hands-on offline reproduction.
+
 ## Start here: how a model judges an agent
 
 Read the [plain-language agent-judge report](report/agent-judge-benchmark.md).
