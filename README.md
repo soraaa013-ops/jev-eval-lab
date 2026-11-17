@@ -12,9 +12,8 @@ results can be interpreted in the wider decision-model landscape.
 
 ## Full project tutorial
 
-Read the [完整中文教程](docs/tutorial.zh-CN.md) for the project’s development,
-design decisions, code walkthrough, answer-quality and agent experiments,
-and interpretation of the results.
+Read the [中文实验讲解](docs/tutorial.zh-CN.md) for the research questions,
+dataset design, judging methods, scoring rules, and results of all three studies.
 
 ## Start here: how a model judges an agent
 
