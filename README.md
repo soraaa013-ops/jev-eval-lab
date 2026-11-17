@@ -14,7 +14,7 @@ results can be interpreted in the wider decision-model landscape.
 
 Read the [完整中文教程](docs/tutorial.zh-CN.md) for the project’s development,
 design decisions, code walkthrough, answer-quality and agent experiments,
-limitations, and hands-on offline reproduction.
+and interpretation of the results.
 
 ## Start here: how a model judges an agent
 
