@@ -10,6 +10,12 @@ The research focus is evaluation, not a claim that Jev should replace an LLM.
 The report separately surveys existing Jev applications so that benchmark
 results can be interpreted in the wider decision-model landscape.
 
+## Next agent evaluation datasets
+
+[Read the dataset selection and study design (Chinese)](report/benchmark-selection.md).
+Prioritize official τ-bench text tasks and BFCL multi-turn tasks, then WebArena.
+Existing AgentProcessBench results remain a separate process-label study; new runs have not started.
+
 ## New: GPT-5 mini on RewardBench 2
 
 [Read the three-model winner-selection comparison](report/rewardbench2-gpt5mini-comparison.md).

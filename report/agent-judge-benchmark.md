@@ -1,5 +1,7 @@
 # System One 究竟如何评估 Agent？
 
+> 本文为已完成的 AgentProcessBench 子集实验，不是 BFCL / τ² 官方全量成绩。新的主实验选型见[数据集选择与实验设计](benchmark-selection.md)。
+
 ## 先用一句话说清楚
 
 **把 agent 做过的事情交给一个“检查员”，让它逐步判断行为是否正确，再检查任务是否完成。System One 和 LLM-as-judge 是实现这个检查员的两种方式。** 它们不会因为被称为 judge 就自动知道工具实际发生了什么；判断必须依赖任务约束、工具返回、环境状态等证据。
